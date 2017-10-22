@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/exampleData">
+        <file>data/tasks.ics</file>
+    </qresource>
+</RCC>
