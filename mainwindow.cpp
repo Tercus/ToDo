@@ -41,3 +41,39 @@ void MainWindow::on_pushButton_connect_clicked()
     }
 
 }
+
+void MainWindow::on_pushButton_parse_clicked()
+{
+    QFile file(":/exampleData/data/tasks.ics");
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::information(this,"Title","File not open");
+    }
+    QTextStream in(&file);
+    int index;
+    bool vtodo;
+    QMap<QString, QList<QString>> map;
+
+    while (!in.atEnd())
+    {
+        QString text = in.readLine();
+        if (!text.isEmpty())
+        {
+            if(text == "BEGIN:VTODO"){
+                index++;
+                vtodo = true;
+            }
+            if(text == "END:VTODO") vtodo = false;
+
+            if(vtodo){
+                QStringList line = text.split(':');
+                map[line[0]].insert(index, line[1]);
+            }
+        }
+    }
+    qDebug() << map;
+//    qDebug() << map["DESCRIPTION"];
+//    QList<QString> var;
+//    foreach (var, map) {
+//        qDebug() << var;
+//    }
+}

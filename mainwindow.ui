@@ -151,6 +151,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_parse">
+        <property name="text">
+         <string>Parse Text</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
