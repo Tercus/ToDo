@@ -49,31 +49,54 @@ void MainWindow::on_pushButton_parse_clicked()
         QMessageBox::information(this,"Title","File not open");
     }
     QTextStream in(&file);
-    int index;
-    bool vtodo;
-    QMap<QString, QList<QString>> map;
+    int index = 0;
+    QMap<QString, QString> map;
 
     while (!in.atEnd())
     {
         QString text = in.readLine();
         if (!text.isEmpty())
         {
-            if(text == "BEGIN:VTODO"){
-                index++;
-                vtodo = true;
-            }
-            if(text == "END:VTODO") vtodo = false;
+            if(text == "BEGIN:VTODO") index++;
 
-            if(vtodo){
+            if( text.contains("UID") ||
+                text.contains("DTSTAMP") ||
+                text.contains("DUE;VALUE=DATE") ||
+                text.contains("LAST-MODIFIED") ||
+                text.contains("PRIORITY") ||
+                text.contains("SUMMARY") ||
+                text.contains("DESCRIPTION")){
                 QStringList line = text.split(':');
-                map[line[0]].insert(index, line[1]);
+                QString name = QString("%1-%2").arg(line[0]).arg(index);
+                map[name] = line[1];
             }
         }
     }
-    qDebug() << map;
-//    qDebug() << map["DESCRIPTION"];
-//    QList<QString> var;
-//    foreach (var, map) {
-//        qDebug() << var;
-//    }
+    index = 0;
+
+//  Debug Output:
+    foreach (QString key, map.keys()) {
+        qDebug() << key << ":" << map.value(key);
+    }
+    map.clear();
+
+//###################################
+//      Sample Data
+//BEGIN             VTODO
+//UID               20171022T222604Z-23706-1000-1952-2@tobias-PC-linux
+//DTSTAMP           20171022T222604Z
+//SUMMARY           with date
+//DESCRIPTION       and a description
+//DUE;VALUE=DATE    20171026
+//PRIORITY          2
+//SEQUENCE          1
+//LAST-MODIFIED     20171022T222624Z
+//END               VTODO
+}
+
+void MainWindow::on_pushButton_table_clicked()
+{
+    for(int col = 0; col < ui->tableWidget->columnCount(); ++col){
+        qDebug() << ui->tableWidget->horizontalHeaderItem(col)->text();
+    }
 }
