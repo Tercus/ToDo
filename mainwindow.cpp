@@ -51,6 +51,7 @@ void MainWindow::on_pushButton_parse_clicked()
     QTextStream in(&file);
     int index = 0;
     QMap<QString, QString> map;
+    QList<QString> headers;
 
     while (!in.atEnd())
     {
@@ -67,6 +68,15 @@ void MainWindow::on_pushButton_parse_clicked()
                 text.contains("SUMMARY") ||
                 text.contains("DESCRIPTION")){
                 QStringList line = text.split(':');
+                if(!headers.contains(line[0])) {
+                    // Add new header
+                    headers << line[0];
+                    ui->tableWidget->setColumnCount(headers.count());
+                    ui->tableWidget->setHorizontalHeaderItem(headers.count()-1, new QTableWidgetItem(line[0]));
+                }
+                ui->tableWidget->setRowCount(index);
+                ui->tableWidget->setItem(index-1, headers.indexOf(line[0]), new QTableWidgetItem(line[1]));
+
                 QString name = QString("%1-%2").arg(line[0]).arg(index);
                 map[name] = line[1];
             }
@@ -75,9 +85,10 @@ void MainWindow::on_pushButton_parse_clicked()
     index = 0;
 
 //  Debug Output:
-    foreach (QString key, map.keys()) {
-        qDebug() << key << ":" << map.value(key);
-    }
+//    foreach (QString key, map.keys()) {
+//        qDebug() << key << ":" << map.value(key);
+//    }
+//    qDebug() << headers;
     map.clear();
 
 //###################################
@@ -96,7 +107,7 @@ void MainWindow::on_pushButton_parse_clicked()
 
 void MainWindow::on_pushButton_table_clicked()
 {
-    for(int col = 0; col < ui->tableWidget->columnCount(); ++col){
-        qDebug() << ui->tableWidget->horizontalHeaderItem(col)->text();
-    }
+//    for(int col = 0; col < ui->tableWidget->columnCount(); ++col){
+//        qDebug() << ui->tableWidget->horizontalHeaderItem(col)->text();
+//    }
 }
