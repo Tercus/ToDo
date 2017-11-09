@@ -89,9 +89,6 @@ void MainWindow::on_pushButton_beautify_clicked()
 {
     for (int var = 0; var < ui->tableWidget->rowCount(); var++) {
         ui->listWidget->addItem(ui->tableWidget->item(var,2)->text());
-// This would make the have checkboxes, but sadly that does not work and makes them unclickable.
-//        ui->listWidget->item(var)->setFlags(Qt::ItemIsUserCheckable);
-//        ui->listWidget->item(var)->setCheckState(Qt::Unchecked);
     }
 }
 
@@ -101,7 +98,7 @@ void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
     QString summary = "";
     QString description = "";
     if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) summary = ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text();
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 4)) description = ui->tableWidget->item(ui->listWidget->currentRow(), 4)->text();
+    if(ui->tableWidget->item(ui->listWidget->currentRow(), 3)) description = ui->tableWidget->item(ui->listWidget->currentRow(), 3)->text();
     ui->lineEdit_summary->setText(summary);
     ui->textEdit_description->setText(description);
 }

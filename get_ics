@@ -1,0 +1,1 @@
+wget --output-document ./calendar.ics --auth-no-challenge --http-user=USER --http-password="PASSWORD" "https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias"
