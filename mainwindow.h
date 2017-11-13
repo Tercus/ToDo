@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QtNetwork/QNetworkReply>
 
 namespace Ui {
 class MainWindow;
@@ -31,8 +32,14 @@ private slots:
 
     void on_pushButton_closeView_clicked();
 
+    void on_pushButton_serverConnect_clicked();
+
+public slots:
+    void requestFinished(QNetworkReply *reply);
+
 private:
     Ui::MainWindow *ui;
 };
+
 
 #endif // MAINWINDOW_H
