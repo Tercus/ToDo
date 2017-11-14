@@ -43,7 +43,8 @@ private:
 
     void icsToTable(QString fullText);
     void debugMessage(QString message);
-    QString requestBody(QString bodyType);
+    QString requestBody(QString requestType);
+    void buildRequest(QUrl url, QString username, QString password, QString requestType);
 };
 
 
