@@ -38,7 +38,12 @@ public slots:
     void requestFinished(QNetworkReply *reply);
 
 private:
+    bool debugMode;
     Ui::MainWindow *ui;
+
+    void icsToTable(QString fullText);
+    void debugMessage(QString message);
+    QString requestBody(QString bodyType);
 };
 
 

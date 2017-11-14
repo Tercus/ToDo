@@ -14,156 +14,163 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0" colspan="2">
-         <widget class="QLineEdit" name="lineEdit_server">
-          <property name="text">
-           <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias</string>
-          </property>
-          <property name="placeholderText">
-           <string>Server</string>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_server">
+            <property name="text">
+             <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias</string>
+            </property>
+            <property name="placeholderText">
+             <string>Server</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="lineEdit_username">
+            <property name="text">
+             <string>Tobias</string>
+            </property>
+            <property name="placeholderText">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit_password">
+            <property name="text">
+             <string>Talib-chan12</string>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+            <property name="placeholderText">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QPushButton" name="pushButton_serverConnect">
+            <property name="text">
+             <string>Get Data from Server</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton_openFile">
+            <property name="text">
+             <string>Open File</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_demo">
+            <property name="text">
+             <string>Demo File</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="plainTextEdit">
+          <property name="plainText">
+           <string/>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLineEdit" name="lineEdit_username">
+        <item>
+         <widget class="QPushButton" name="pushButton_parse">
           <property name="text">
-           <string>Tobias</string>
-          </property>
-          <property name="placeholderText">
-           <string>Username</string>
+           <string>⇩ Parse Text ⇩</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_password">
-          <property name="text">
-           <string>Talib-chan12</string>
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="rowCount">
+           <number>0</number>
           </property>
-          <property name="echoMode">
-           <enum>QLineEdit::Password</enum>
-          </property>
-          <property name="placeholderText">
-           <string>Password</string>
+          <property name="columnCount">
+           <number>0</number>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QPushButton" name="pushButton_serverConnect">
+        <item>
+         <widget class="QPushButton" name="pushButton_beautify">
           <property name="text">
-           <string>Get Data from Server</string>
+           <string>⇨ Beautify ⇨</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QPushButton" name="pushButton_openFile">
-          <property name="text">
-           <string>Open File</string>
+         <widget class="QListWidget" name="listWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_demo">
-          <property name="text">
-           <string>Demo File</string>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Task Info</string>
           </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="lineEdit_summary"/>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QTextEdit" name="textEdit_description"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_summary">
+             <property name="text">
+              <string>Summary:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_description">
+             <property name="text">
+              <string>Description:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QPushButton" name="pushButton_closeView">
+             <property name="text">
+              <string>Close View</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
-        <property name="plainText">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_parse">
-        <property name="text">
-         <string>⇩ Parse Text ⇩</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="rowCount">
-         <number>0</number>
-        </property>
-        <property name="columnCount">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_beautify">
-        <property name="text">
-         <string>⇨ Beautify ⇨</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QListWidget" name="listWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Task Info</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="lineEdit_summary"/>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QTextEdit" name="textEdit_description"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_summary">
-           <property name="text">
-            <string>Summary:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_description">
-           <property name="text">
-            <string>Description:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="pushButton_closeView">
-           <property name="text">
-            <string>Close View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QPlainTextEdit" name="debugField"/>
     </item>
    </layout>
   </widget>
