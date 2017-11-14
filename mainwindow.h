@@ -32,7 +32,9 @@ private slots:
 
     void on_pushButton_closeView_clicked();
 
-    void on_pushButton_serverConnect_clicked();
+    void on_pushButton_getCalendarList_clicked();
+
+    void on_pushButton_getTodoList_clicked();
 
 public slots:
     void requestFinished(QNetworkReply *reply);

@@ -55,9 +55,16 @@
            </widget>
           </item>
           <item row="2" column="0" colspan="2">
-           <widget class="QPushButton" name="pushButton_serverConnect">
+           <widget class="QPushButton" name="pushButton_getCalendarList">
             <property name="text">
-             <string>Get Data from Server</string>
+             <string>Get Calenders</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QPushButton" name="pushButton_getTodoList">
+            <property name="text">
+             <string>Get ToDo</string>
             </property>
            </widget>
           </item>

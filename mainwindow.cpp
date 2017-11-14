@@ -86,7 +86,7 @@ void MainWindow::on_pushButton_closeView_clicked()
     ui->groupBox->setHidden(true);
 }
 
-void MainWindow::on_pushButton_serverConnect_clicked()
+void MainWindow::on_pushButton_getCalendarList_clicked()
 {
     buildRequest(ui->lineEdit_server->text(),
                  ui->lineEdit_username->text(),
@@ -99,4 +99,12 @@ void MainWindow::debugMessage(QString message)
     if(debugMode) {
         ui->debugField->setPlainText(ui->debugField->toPlainText() + message + "\n");
     }
+}
+
+void MainWindow::on_pushButton_getTodoList_clicked()
+{
+    buildRequest(ui->lineEdit_server->text(),
+                 ui->lineEdit_username->text(),
+                 ui->lineEdit_password->text(),
+                 "get_todo_list");
 }
