@@ -4,48 +4,44 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkAccessManager>
 
-void MainWindow::buildRequest(QUrl url, QString username, QString password, QString requestType)
+void MainWindow::buildRequest(QString requestType)
 {
-    // Set the main URL for the thingy
-    QNetworkRequest request(url);
-
-    // Set the username and Password
-    QString concatenated = username + ":" + password;
-    QByteArray authData = concatenated.toLocal8Bit().toBase64();
-    QString headerAuthData = "Basic " + authData;
-    request.setRawHeader("Authorization", headerAuthData.toLocal8Bit());
-
-    // Not sure if this is needed
-    request.setRawHeader("Depth", "1");
-
-    // we set a user agent to prevent troubles with some Nextcloud server hosting providers
-//    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
-
-    // build the request body
+    QNetworkRequest request(ui->lineEdit_server->text());
     QString body = requestBody(requestType);
-
-    // acquire the size for the body to set in header
     QByteArray *dataToSend = new QByteArray(body.toUtf8());
-    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
     QBuffer *buffer = new QBuffer(dataToSend);
-
-    // Init new NAM
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
+    QString requestMethod;
 
-    // Connect the NAM with the SLOT requestFinished
-    connect(manager,
-            SIGNAL(finished(QNetworkReply*)),
-            this,
-            SLOT(requestFinished(QNetworkReply*))
-            );
+
+    // set header data
+    request.setRawHeader("Authorization", createAuth().toLocal8Bit());
+    request.setRawHeader("Depth", "1");
+    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
+
 
     if(requestType == "get_calendar_list") {
-        manager->sendCustomRequest(request, "PROPFIND", buffer);
+        requestMethod = "PROPFIND";
     }
     else if(requestType == "get_todo_list") {
-        manager->sendCustomRequest(request, "REPORT", buffer);
+        requestMethod = "REPORT";
     }
+    else if(requestType == "check_updates") {
+        requestMethod = "REPORT";
+    }
+
+    manager->sendCustomRequest(request, requestMethod.toLocal8Bit(), buffer);
+}
+
+QString MainWindow::createAuth()
+{
+    QString concatenated = ui->lineEdit_username->text() + ":" + ui->lineEdit_password->text();
+    QByteArray authData = concatenated.toLocal8Bit().toBase64();
+    QString headerAuthData = "Basic " + authData;
+    return headerAuthData;
 }
 
 QString MainWindow::requestBody(QString requestType)
@@ -75,8 +71,17 @@ QString MainWindow::requestBody(QString requestType)
                             </c:filter> \
                        </c:calendar-query>";
     }
-    else if(requestType == "test") {
-        bodyContent = "Nothing but a little test";
+    else if(requestType == "check_updates") {
+        bodyContent = "<c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\"> \
+                            <d:prop> \
+                                <d:getetag /> \
+                            </d:prop> \
+                            <c:filter> \
+                                <c:comp-filter name=\"VCALENDAR\"> \
+                                    <c:comp-filter name=\"VTODO\" /> \
+                                </c:comp-filter> \
+                            </c:filter> \
+                       </c:calendar-query>";
     }
     else {
         bodyContent = "";

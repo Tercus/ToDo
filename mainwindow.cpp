@@ -88,10 +88,7 @@ void MainWindow::on_pushButton_closeView_clicked()
 
 void MainWindow::on_pushButton_getCalendarList_clicked()
 {
-    buildRequest(ui->lineEdit_server->text(),
-                 ui->lineEdit_username->text(),
-                 ui->lineEdit_password->text(),
-                 "get_calendar_list");
+    buildRequest("get_calendar_list");
 }
 
 void MainWindow::debugMessage(QString message)
@@ -103,8 +100,5 @@ void MainWindow::debugMessage(QString message)
 
 void MainWindow::on_pushButton_getTodoList_clicked()
 {
-    buildRequest(ui->lineEdit_server->text(),
-                 ui->lineEdit_username->text(),
-                 ui->lineEdit_password->text(),
-                 "get_todo_list");
+    buildRequest("get_todo_list");
 }
