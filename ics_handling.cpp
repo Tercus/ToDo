@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-void MainWindow::icsToTable(QString fullText) {
+void MainWindow::icsToTable(QString fullText)
+{
     QString cutBeginning = fullText.mid(fullText.indexOf("BEGIN:VTODO"));
     QString cleanedText = cutBeginning.left(cutBeginning.lastIndexOf("END:VTODO")+9);
     QStringList lines = cleanedText.split("\n");
@@ -40,3 +41,69 @@ void MainWindow::icsToTable(QString fullText) {
         }
     }
 }
+
+QString MainWindow::getValueFromIcs(QString fullText, QString searchvalue)
+{
+    QStringList icsFields = fullText.split("\n");
+    QStringList filtered_entries = icsFields.filter(searchvalue);
+    if(filtered_entries.size() > 0) {
+        QString fullEntry = icsFields.at(icsFields.indexOf(filtered_entries.at(0)));
+        QStringList splitEntry = fullEntry.split(":");
+        debugMessage("Following entry found for \"" + searchvalue + "\":\n" + splitEntry.at(1));
+        return splitEntry.at(1);
+    }
+    debugMessage("Could not find specified entry \"" + searchvalue + "\" in the ics");
+    return "";
+}
+
+QString MainWindow::changeValueInIcs(QString fullText, QString searchValue, QString newValue)
+{
+    QStringList icsFields = fullText.split("\n");
+    QStringList filtered_entries = icsFields.filter(searchValue);
+    if(filtered_entries.size() > 0) {
+        int index = icsFields.indexOf(filtered_entries.at(0));
+        QString fullEntry = icsFields.at(index);
+        QStringList splitEntry = fullEntry.split(":");
+        icsFields[index] = splitEntry[0] + ":" + newValue;
+        debugMessage("Following entry found for \"" + searchValue + "\" from:\n" + splitEntry.at(1) + "\nto:\n" + newValue);
+        return icsFields.join("\n");
+    }
+    debugMessage("Could not find specified entry \"" + searchValue + "\" in the ics.");
+    return "";
+}
+
+QString MainWindow::insertValueInIcs(QString fullText, QString searchValue, QString newValue)
+{
+    QStringList icsFields = fullText.split("\n");
+    QStringList filtered_entries = icsFields.filter(searchValue);
+    if(filtered_entries.size() == 0) {
+        int vtodoEnd = icsFields.indexOf("END:VTODO")-1;
+        searchValue = searchValue.replace(":", "");
+        icsFields.insert(vtodoEnd, searchValue + ":" + newValue);
+        debugMessage("Following new entry added: \"" + searchValue + ":" + newValue + "\"");
+        return icsFields.join("\n");
+    }
+    debugMessage("Could not add entry \"" + searchValue + ":" + newValue + "\" in the ics, as that entry already exists.");
+    return "";
+}
+
+
+//#############################
+//      Sample VTODO
+//#############################
+//    BEGIN:VCALENDAR
+//    VERSION:2.0
+//    PRODID:-//Nextcloud Tasks v0.9.5
+//    BEGIN:VTODO
+//    CREATED:20171116T011409
+//    DTSTAMP:20171116T011447
+//    LAST-MODIFIED:20171116T011447
+//    UID:pc97f4hjce
+//    SUMMARY:Fourth item completed
+//    PRIORITY:0
+//    PERCENT-COMPLETE:100
+//    X-OC-HIDESUBTASKS:0
+//    COMPLETED:20171116T011447
+//    STATUS:COMPLETED
+//    END:VTODO
+//    END:VCALENDAR

@@ -48,6 +48,9 @@ private:
     QString requestBody(QString requestType);
     void buildRequest(QString requestType);
     QString createAuth();
+    QString getValueFromIcs(QString fullText, QString searchvalue);
+    QString changeValueInIcs(QString fullText, QString searchValue, QString newValue);
+    QString insertValueInIcs(QString fullText, QString searchValue, QString newValue);
 };
 
 
