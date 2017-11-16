@@ -24,7 +24,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QLineEdit" name="lineEdit_server">
             <property name="text">
-             <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/personal</string>
+             <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/</string>
             </property>
             <property name="placeholderText">
              <string>Server</string>

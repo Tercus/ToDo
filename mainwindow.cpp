@@ -68,17 +68,35 @@ void MainWindow::on_pushButton_beautify_clicked()
 {
     debugMessage("Using data from table to view them nicely");
     ui->listWidget->clear();
+    QStringList tableHeaders;
+    for(int x = 0; x < ui->tableWidget->columnCount(); x++) {
+        tableHeaders << ui->tableWidget->horizontalHeaderItem(x)->text();
+    }
     for (int var = 0; var < ui->tableWidget->rowCount(); var++) {
-        ui->listWidget->addItem(ui->tableWidget->item(var,2)->text());
+        ui->listWidget->addItem(ui->tableWidget->item(var,tableHeaders.indexOf("SUMMARY"))->text());
     }
 }
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
+    QStringList tableHeaders;
+    for(int x = 0; x < ui->tableWidget->columnCount(); x++) {
+        tableHeaders << ui->tableWidget->horizontalHeaderItem(x)->text();
+    }
     // unhide the groupbox and show more detailed information (currently gets it from the tablewidget)
     ui->groupBox->setHidden(false);
-    ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text());
-    ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 3)->text());
+    if(ui->tableWidget->item(ui->listWidget->currentRow(), tableHeaders.indexOf("SUMMARY"))) {
+        ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), tableHeaders.indexOf("SUMMARY"))->text());
+    }
+    else {
+        ui->lineEdit_summary->setText("");
+    }
+    if(ui->tableWidget->item(ui->listWidget->currentRow(), tableHeaders.indexOf("DESCRIPTION"))) {
+        ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), tableHeaders.indexOf("DESCRIPTION"))->text());
+    }
+    else {
+        ui->textEdit_description->setText("");
+    }
 }
 
 void MainWindow::on_pushButton_closeView_clicked()
