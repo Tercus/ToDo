@@ -103,42 +103,59 @@
      </layout>
     </item>
     <item>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="rowCount">
-       <number>0</number>
-      </property>
-      <property name="columnCount">
-       <number>5</number>
-      </property>
-      <column>
-       <property name="text">
-        <string>UID</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Summary</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Description</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Due</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Duration</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPlainTextEdit" name="debugField"/>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPlainTextEdit" name="debugField">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="rowCount">
+         <number>0</number>
+        </property>
+        <property name="columnCount">
+         <number>5</number>
+        </property>
+        <column>
+         <property name="text">
+          <string>UID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Summary</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Description</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Due</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Duration</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
