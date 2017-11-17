@@ -20,21 +20,15 @@ public:
 private slots:
     void on_actionExit_triggered();
 
-    void on_pushButton_parse_clicked();
-
-    void on_pushButton_openFile_clicked();
-
-    void on_pushButton_demo_clicked();
-
-    void on_pushButton_beautify_clicked();
-
     void onListWidgetlItemClicked(QListWidgetItem *);
 
-    void on_pushButton_closeView_clicked();
+    void on_actionImport_ToDo_s_triggered();
 
-    void on_pushButton_getCalendarList_clicked();
+    void on_actionDemo_Data_triggered();
 
-    void on_pushButton_getTodoList_clicked();
+    void on_actionGet_ToDo_s_from_Server_triggered();
+
+    void on_actionGet_Calendars_from_Server_triggered();
 
 public slots:
     void requestFinished(QNetworkReply *reply);
@@ -51,6 +45,7 @@ private:
     QString getValueFromIcs(QString fullText, QString searchvalue);
     QString changeValueInIcs(QString fullText, QString searchValue, QString newValue);
     QString insertValueInIcs(QString fullText, QString searchValue, QString newValue);
+    void parseIcs(QString fullText);
 };
 
 

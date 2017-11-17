@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
 
-    ui->groupBox->setHidden(true);
-
     debugMode = true;
 //    ui->tableWidget->setHidden(true);
 }
@@ -33,39 +31,19 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
-void MainWindow::on_pushButton_parse_clicked()
-{
-    debugMessage("populating the table");
-    QString textToParse = ui->plainTextEdit->toPlainText();
-    if(textToParse.count("BEGIN:VTODO") > 1) {
-        QStringList multipleTodo = textToParse.split("END:VTODO");
-        foreach (QString singleTodo, multipleTodo) {
-            if(singleTodo.contains("BEGIN:VTODO")) {
-                icsToTable(singleTodo + "END:VTODO");
-            }
-        }
-    }
-    else if(textToParse.count("BEGIN:VTODO") == 1) {
-        icsToTable(textToParse);
-    }
-    else {
-        debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
-    }
-}
-
-void MainWindow::on_pushButton_openFile_clicked()
+void MainWindow::on_actionImport_ToDo_s_triggered()
 {
     QString file_name = QFileDialog::getOpenFileName(this, "Open a file", "", "*.ics");
     QFile file(file_name);
     if(file.open(QFile::ReadOnly | QFile::Text)){
         QTextStream in(&file);
         QString text = in.readAll();
-        ui->plainTextEdit->setPlainText(text);
+        parseIcs(text);
         file.close();
     }
 }
 
-void MainWindow::on_pushButton_demo_clicked()
+void MainWindow::on_actionDemo_Data_triggered()
 {
     debugMessage("Filling plainTextField with demo ics file.");
     QFile file(":/exampleData/data/tasks.ics");
@@ -74,24 +52,22 @@ void MainWindow::on_pushButton_demo_clicked()
     }
     QTextStream in(&file);
     QString text = in.readAll();
-    ui->plainTextEdit->setPlainText(text);
+    parseIcs(text);
     file.close();
 }
 
-void MainWindow::on_pushButton_beautify_clicked()
+void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
 {
-    debugMessage("Using data from table to view them nicely");
-    ui->listWidget->clear();
-    for (int var = 0; var < ui->tableWidget->rowCount(); var++) {
-        ui->listWidget->addItem(ui->tableWidget->item(var,1)->text());
-    }
+    buildRequest("get_todo_list");
+}
+
+void MainWindow::on_actionGet_Calendars_from_Server_triggered()
+{
+    buildRequest("get_calendar_list");
 }
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    // unhide the groupbox and show more detailed information (currently gets it from the tablewidget)
-    ui->groupBox->setHidden(false);
-
     if(ui->tableWidget->item(ui->listWidget->currentRow(), 1)) {
         ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 1)->text());
     }
@@ -106,24 +82,9 @@ void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
     }
 }
 
-void MainWindow::on_pushButton_closeView_clicked()
-{
-    ui->groupBox->setHidden(true);
-}
-
-void MainWindow::on_pushButton_getCalendarList_clicked()
-{
-    buildRequest("get_calendar_list");
-}
-
 void MainWindow::debugMessage(QString message)
 {
     if(debugMode) {
         ui->debugField->setPlainText(ui->debugField->toPlainText() + message + "\n");
     }
-}
-
-void MainWindow::on_pushButton_getTodoList_clicked()
-{
-    buildRequest("get_todo_list");
 }

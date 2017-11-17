@@ -28,7 +28,8 @@ void MainWindow::requestFinished(QNetworkReply *reply)
             QDomNode node = root.childNodes().at(y);
 //            debugMessage(node.nodeName().toUtf8() + ":\n" + node.toElement().QDomElement::text());
             if(node.nodeName().toUtf8() == "cal:calendar-data" && node.toElement().QDomElement::text().contains("BEGIN:VTODO")) {
-                icsToTable(node.toElement().QDomElement::text());
+                parseIcs(node.toElement().QDomElement::text());
+//                icsToTable(node.toElement().QDomElement::text());
 //                getValueFromIcs(node.toElement().QDomElement::text(), "DESCRIPTION:");
             }
         }

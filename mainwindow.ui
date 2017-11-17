@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0" colspan="2">
@@ -54,100 +54,8 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QPushButton" name="pushButton_getCalendarList">
-            <property name="text">
-             <string>Get Calenders</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" colspan="2">
-           <widget class="QPushButton" name="pushButton_getTodoList">
-            <property name="text">
-             <string>Get ToDo</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QPushButton" name="pushButton_openFile">
-            <property name="text">
-             <string>Open File</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_demo">
-            <property name="text">
-             <string>Demo File</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QPlainTextEdit" name="plainTextEdit">
-          <property name="plainText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_parse">
-          <property name="text">
-           <string>⇩ Parse Text ⇩</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableWidget">
-          <property name="rowCount">
-           <number>0</number>
-          </property>
-          <property name="columnCount">
-           <number>5</number>
-          </property>
-          <column>
-           <property name="text">
-            <string>UID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Summary</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Description</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Due</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Duration</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_beautify">
-          <property name="text">
-           <string>⇨ Beautify ⇨</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QListWidget" name="listWidget">
           <property name="sizePolicy">
@@ -161,45 +69,73 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Task Info</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="0">
-            <widget class="QLineEdit" name="lineEdit_summary"/>
-           </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="QTextEdit" name="textEdit_description"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_summary">
-             <property name="text">
-              <string>Summary:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_description">
-             <property name="text">
-              <string>Description:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QPushButton" name="pushButton_closeView">
-             <property name="text">
-              <string>Close View</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Task Info</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="lineEdit_summary"/>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QTextEdit" name="textEdit_description"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_summary">
+           <property name="text">
+            <string>Summary:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_description">
+           <property name="text">
+            <string>Description:</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <property name="columnCount">
+       <number>5</number>
+      </property>
+      <column>
+       <property name="text">
+        <string>UID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Summary</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Description</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Due</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Duration</string>
+       </property>
+      </column>
+     </widget>
     </item>
     <item>
      <widget class="QPlainTextEdit" name="debugField"/>
@@ -217,11 +153,14 @@
    </property>
    <widget class="QMenu" name="menuTasks">
     <property name="title">
-     <string>Tasks</string>
+     <string>File</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionClose_selected"/>
-    <addaction name="actionRe_open_selected"/>
+    <addaction name="actionDemo_Data"/>
+    <addaction name="actionImport_ToDo_s"/>
+    <addaction name="actionExport_ToDo_s"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -229,6 +168,9 @@
      <string>View</string>
     </property>
     <addaction name="actionShow_closed_tasks"/>
+    <addaction name="separator"/>
+    <addaction name="actionGet_ToDo_s_from_Server"/>
+    <addaction name="actionGet_Calendars_from_Server"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -260,9 +202,9 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNew">
+  <action name="actionImport_ToDo_s">
    <property name="text">
-    <string>New task</string>
+    <string>Import ToDo's</string>
    </property>
   </action>
   <action name="actionClose_selected">
@@ -301,6 +243,31 @@
   <action name="actionAbout_ToDo">
    <property name="text">
     <string>About ToDo</string>
+   </property>
+  </action>
+  <action name="actionExport_ToDo_s">
+   <property name="text">
+    <string>Export ToDo's</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionDemo_Data">
+   <property name="text">
+    <string>Demo-Data</string>
+   </property>
+  </action>
+  <action name="actionGet_ToDo_s_from_Server">
+   <property name="text">
+    <string>Get ToDo's from Server</string>
+   </property>
+  </action>
+  <action name="actionGet_Calendars_from_Server">
+   <property name="text">
+    <string>Get Calendars from Server</string>
    </property>
   </action>
  </widget>

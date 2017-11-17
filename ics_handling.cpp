@@ -1,6 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::parseIcs(QString fullText)
+{
+    if(fullText.count("BEGIN:VTODO") > 1) {
+        QStringList multipleTodo = fullText.split("END:VTODO");
+        foreach (QString singleTodo, multipleTodo) {
+            if(singleTodo.contains("BEGIN:VTODO")) {
+                icsToTable(singleTodo + "END:VTODO");
+            }
+        }
+    }
+    else if(fullText.count("BEGIN:VTODO") == 1) {
+        icsToTable(fullText);
+    }
+    else {
+        debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
+    }
+}
+
 void MainWindow::icsToTable(QString fullText)
 {
     QString todoUID = getValueFromIcs(fullText, "UID:");
@@ -16,6 +34,8 @@ void MainWindow::icsToTable(QString fullText)
     ui->tableWidget->setItem(newRow, 2, new QTableWidgetItem(todoDescription));
     ui->tableWidget->setItem(newRow, 3, new QTableWidgetItem(todoDue));
     ui->tableWidget->setItem(newRow, 4, new QTableWidgetItem(todoDuration));
+
+    ui->listWidget->addItem(todoSummary);
 }
 
 QString MainWindow::getValueFromIcs(QString fullText, QString searchvalue)
@@ -25,7 +45,7 @@ QString MainWindow::getValueFromIcs(QString fullText, QString searchvalue)
     if(filtered_entries.size() > 0) {
         QString fullEntry = icsFields.at(icsFields.indexOf(filtered_entries.at(0)));
         QStringList splitEntry = fullEntry.split(":");
-        debugMessage("Following entry found for \"" + searchvalue + "\":\n" + splitEntry.at(1));
+        debugMessage("Following entry found for \"" + searchvalue + "\" -> " + splitEntry.at(1));
         return splitEntry.at(1);
     }
     debugMessage("Could not find specified entry \"" + searchvalue + "\" in the ics");
