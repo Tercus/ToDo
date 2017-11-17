@@ -12,16 +12,36 @@ void MainWindow::parseIcs(QString fullText)
         }
     }
     else if(fullText.count("BEGIN:VTODO") == 1) {
-        icsToTable(fullText);
+//        icsToTable(fullText);
+        icsToMap(fullText);
     }
     else {
         debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
     }
 }
 
+void MainWindow::icsToMap(QString fullText)
+{
+    QMap<QString, QString> values;
+    QString UID;
+
+    QStringList icsFields = fullText.split("\n");
+    foreach (QString entry, icsFields) {
+        QStringList keyAndValue = entry.split(":");
+        QString key = keyAndValue[0];
+        keyAndValue.removeFirst();
+        QString value = keyAndValue.join(":");
+        values[key] = value;
+    }
+    if(values.contains("UID")) {
+        todoList[values["UID"]] = values;
+    }
+}
+
 void MainWindow::icsToTable(QString fullText)
 {
     QString todoUID = getValueFromIcs(fullText, "UID:");
+    QString todoCompletion = getValueFromIcs(fullText, "PERCENT-COMPLETE:");
     QString todoSummary = getValueFromIcs(fullText, "SUMMARY:");
     QString todoDescription = getValueFromIcs(fullText, "DESCRIPTION:");
     QString todoDue = getValueFromIcs(fullText, "DUE:");
@@ -30,10 +50,11 @@ void MainWindow::icsToTable(QString fullText)
     int newRow = ui->tableWidget->rowCount();
     ui->tableWidget->setRowCount(newRow+1);
     ui->tableWidget->setItem(newRow, 0, new QTableWidgetItem(todoUID));
-    ui->tableWidget->setItem(newRow, 1, new QTableWidgetItem(todoSummary));
-    ui->tableWidget->setItem(newRow, 2, new QTableWidgetItem(todoDescription));
-    ui->tableWidget->setItem(newRow, 3, new QTableWidgetItem(todoDue));
-    ui->tableWidget->setItem(newRow, 4, new QTableWidgetItem(todoDuration));
+    ui->tableWidget->setItem(newRow, 1, new QTableWidgetItem(todoCompletion));
+    ui->tableWidget->setItem(newRow, 2, new QTableWidgetItem(todoSummary));
+    ui->tableWidget->setItem(newRow, 3, new QTableWidgetItem(todoDescription));
+    ui->tableWidget->setItem(newRow, 4, new QTableWidgetItem(todoDue));
+    ui->tableWidget->setItem(newRow, 5, new QTableWidgetItem(todoDuration));
 
     ui->listWidget->addItem(todoSummary);
 }

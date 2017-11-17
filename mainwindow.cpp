@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include <QMultiMap>
+#include <QMap>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -69,13 +71,13 @@ void MainWindow::on_actionGet_Calendars_from_Server_triggered()
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
     if(ui->tableWidget->item(ui->listWidget->currentRow(), 1)) {
-        ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 1)->text());
+        ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text());
     }
     else {
         ui->lineEdit_summary->setText("");
     }
     if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) {
-        ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text());
+        ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 3)->text());
     }
     else {
         ui->textEdit_description->setText("");
@@ -86,5 +88,14 @@ void MainWindow::debugMessage(QString message)
 {
     if(debugMode) {
         ui->debugField->appendPlainText(message + "\n");
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    qDebug() << "Number of todos:" << todoList.count();
+    qDebug() << "UIDs of entries:" << todoList.keys();
+    foreach (QString todo, todoList.keys()) {
+        qDebug() << todoList[todo];
     }
 }

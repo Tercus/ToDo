@@ -30,11 +30,14 @@ private slots:
 
     void on_actionGet_Calendars_from_Server_triggered();
 
+    void on_pushButton_clicked();
+
 public slots:
     void requestFinished(QNetworkReply *reply);
 
 private:
     bool debugMode;
+    QMap<QString, QMap<QString, QString>> todoList;
     Ui::MainWindow *ui;
 
     void icsToTable(QString fullText);
@@ -46,6 +49,7 @@ private:
     QString changeValueInIcs(QString fullText, QString searchValue, QString newValue);
     QString insertValueInIcs(QString fullText, QString searchValue, QString newValue);
     void parseIcs(QString fullText);
+    void icsToMap(QString fullText);
 };
 
 

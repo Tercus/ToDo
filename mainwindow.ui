@@ -69,6 +69,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Test</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -126,11 +133,16 @@
          <number>0</number>
         </property>
         <property name="columnCount">
-         <number>5</number>
+         <number>6</number>
         </property>
         <column>
          <property name="text">
           <string>UID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Completion</string>
          </property>
         </column>
         <column>
