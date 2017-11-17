@@ -85,6 +85,6 @@ void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 void MainWindow::debugMessage(QString message)
 {
     if(debugMode) {
-        ui->debugField->setPlainText(ui->debugField->toPlainText() + message + "\n");
+        ui->debugField->appendPlainText(message + "\n");
     }
 }
