@@ -3,6 +3,9 @@
 
 void MainWindow::parseIcs(QString fullText)
 {
+    // RFC 5545: 3.1. -> requires long lines to be folded. Unfold them here
+    fullText.replace("\n ", "");
+
     if(fullText.count("BEGIN:VTODO") > 1) {
         QStringList multipleTodo = fullText.split("END:VTODO");
         foreach (QString singleTodo, multipleTodo) {
@@ -35,6 +38,18 @@ void MainWindow::icsToMap(QString fullText)
     }
     if(values.contains("UID")) {
         todoList[values["UID"]] = values;
+
+        // Just for testing, adding to table to read out
+        int newRow = ui->tableWidget->rowCount();
+        ui->tableWidget->setRowCount(newRow+1);
+        if(values.contains("UID")) ui->tableWidget->setItem(newRow, 0, new QTableWidgetItem(values["UID"]));
+        if(values.contains("COMPLETION")) ui->tableWidget->setItem(newRow, 1, new QTableWidgetItem(values["COMPLETION"]));
+        if(values.contains("SUMMARY")) {
+            ui->tableWidget->setItem(newRow, 2, new QTableWidgetItem(values["SUMMARY"]));
+            ui->listWidget->addItem(values["SUMMARY"]);
+        }
+        if(values.contains("DESCRIPTION")) ui->tableWidget->setItem(newRow, 3, new QTableWidgetItem(values["DESCRIPTION"]));
+        if(values.contains("DUE")) ui->tableWidget->setItem(newRow, 4, new QTableWidgetItem(values["DUE"]));
     }
 }
 

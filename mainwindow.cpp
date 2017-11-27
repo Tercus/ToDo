@@ -70,13 +70,13 @@ void MainWindow::on_actionGet_Calendars_from_Server_triggered()
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 1)) {
+    if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) {
         ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text());
     }
     else {
         ui->lineEdit_summary->setText("");
     }
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) {
+    if(ui->tableWidget->item(ui->listWidget->currentRow(), 3)) {
         ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 3)->text());
     }
     else {

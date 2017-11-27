@@ -17,7 +17,7 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 
     QDomDocument doc("mydocument");
     doc.setContent(text);
-    debugMessage(doc.toString(4));
+//    debugMessage(doc.toString(4));
 
     QDomNodeList todos = doc.elementsByTagName("d:prop");
     qDebug() << "Number of ToDos:" << todos.count();
