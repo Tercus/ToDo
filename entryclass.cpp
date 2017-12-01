@@ -18,9 +18,9 @@ void EntryClass::fillIcsData(QString icsData)
         QString key = keyAndValue[0];
         keyAndValue.removeFirst();
         QString value = keyAndValue.join(":");
-        values[key] = value;
+        valueMap[key] = value;
     }
-    if(values.contains("UID")) {
+    if(valueMap.contains("UID")) {
 //        todoList[values["UID"]] = values;
     }
 }
@@ -33,16 +33,16 @@ void EntryClass::setEtag(QString etagValue)
 QString EntryClass::returnIcs()
 {
     QStringList keysAndValues;
-    foreach (QString key, this->values.keys()) {
-        keysAndValues << key + ":" + this->values[key];
+    foreach (QString key, this->valueMap.keys()) {
+        keysAndValues << key + ":" + this->valueMap[key];
     }
     return(keysAndValues.join("\n"));
 }
 
 QString EntryClass::returnKeyValue(QString key)
 {
-    if(this->values.keys().contains(key)) {
-        return this->values[key];
+    if(this->valueMap.keys().contains(key)) {
+        return this->valueMap[key];
     }
     else {
         qDebug() << "Error: Key" << key << "doesn't exist for entry" << this->returnKeyValue("SUMMARY");
@@ -52,8 +52,8 @@ QString EntryClass::returnKeyValue(QString key)
 
 int EntryClass::editKeyValue(QString key, QString value)
 {
-    if(this->values.keys().contains(key)) {
-        this->values[key] = value;
+    if(this->valueMap.keys().contains(key)) {
+        this->valueMap[key] = value;
         return 1;
     }
     else {

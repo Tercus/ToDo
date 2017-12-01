@@ -13,7 +13,7 @@ public:
     void setEtag(QString etagValue);
     void fillIcsData(QString icsData);
 private:
-    QMap<QString, QString> values;
+    QMap<QString, QString> valueMap;
     QString etag;
 };
 
