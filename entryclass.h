@@ -13,8 +13,9 @@ public:
     void setEtag(QString etagValue);
     void fillIcsData(QString icsData);
 private:
-    QMap<QString, QString> valueMap;
     QString etag;
+    QVector<QString> keys;
+    QVector<QString> values;
 };
 
 #endif // ENTRYCLASS_H

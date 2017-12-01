@@ -72,8 +72,8 @@ void MainWindow::on_actionGet_Calendars_from_Server_triggered()
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    ui->lineEdit_summary->setText(list[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
-    ui->textEdit_description->setText(list[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION"));
+    ui->lineEdit_summary->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
+    ui->textEdit_description->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION"));
 }
 
 void MainWindow::debugMessage(QString message)
@@ -85,5 +85,8 @@ void MainWindow::debugMessage(QString message)
 
 void MainWindow::on_pushButton_clicked()
 {
-
+    qDebug() << ui->listWidget->currentRow();
+    if(ui->listWidget->currentRow() >= 0) {
+        debugMessage(todoList.value(ui->listWidget->currentRow())->returnIcs());
+    }
 }

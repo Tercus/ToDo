@@ -39,8 +39,7 @@ public slots:
 
 private:
     bool debugMode;
-    QMap<QString, QMap<QString, QString>> todoList;
-    QVector<EntryClass *> list;
+    QVector<EntryClass *> todoList;
     Ui::MainWindow *ui;
 
     void icsToTable(QString fullText);

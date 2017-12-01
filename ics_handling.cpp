@@ -4,7 +4,6 @@
 void MainWindow::parseIcs(QString fullText)
 {
     // RFC 5545: 3.1. -> requires long lines to be folded. Unfold them here
-//    qDebug() << fullText;
     fullText.replace("\n ", "");
 
     if(fullText.count("BEGIN:VTODO") > 1) {
@@ -13,7 +12,7 @@ void MainWindow::parseIcs(QString fullText)
             if(singleTodo.contains("BEGIN:VTODO")) {
                 EntryClass *tempEntry = new EntryClass;
                 tempEntry->fillIcsData(singleTodo + "END:VTODO");
-                list.push_back(tempEntry);
+                todoList.push_back(tempEntry);
                 ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
             }
         }
@@ -21,7 +20,7 @@ void MainWindow::parseIcs(QString fullText)
     else if(fullText.count("BEGIN:VTODO") == 1) {
         EntryClass *tempEntry = new EntryClass;
         tempEntry->fillIcsData(fullText);
-        list.push_back(tempEntry);
+        todoList.push_back(tempEntry);
         ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
     }
     else {
