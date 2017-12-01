@@ -27,9 +27,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     ics_handling.cpp \
     server_request.cpp \
-    server_reply.cpp
+    server_reply.cpp \
+    entryclass.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    entryclass.h
 
 FORMS    += mainwindow.ui
 

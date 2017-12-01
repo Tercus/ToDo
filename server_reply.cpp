@@ -6,9 +6,7 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 {
     QUrl url = reply->url();
     QString urlPath = url.path();
-    QString text = reply->readAll();
-//    debugMessage("Got following reply from " + urlPath + ":");
-//    debugMessage(text);
+    QString replyText = reply->readAll();
 
     if (reply->error() != QNetworkReply::NoError) {
         debugMessage("Darnit, something went wrong: \n Error " + QString::number(reply->error()) + " from url " + url.toString() + ": " + reply->errorString());
@@ -16,7 +14,7 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 
 
     QDomDocument doc("mydocument");
-    doc.setContent(text);
+    doc.setContent(replyText);
 //    debugMessage(doc.toString(4));
 
     QDomNodeList todos = doc.elementsByTagName("d:prop");
@@ -29,8 +27,6 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 //            debugMessage(node.nodeName().toUtf8() + ":\n" + node.toElement().QDomElement::text());
             if(node.nodeName().toUtf8() == "cal:calendar-data" && node.toElement().QDomElement::text().contains("BEGIN:VTODO")) {
                 parseIcs(node.toElement().QDomElement::text());
-//                icsToTable(node.toElement().QDomElement::text());
-//                getValueFromIcs(node.toElement().QDomElement::text(), "DESCRIPTION:");
             }
         }
     }

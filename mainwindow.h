@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QtNetwork/QNetworkReply>
+#include "entryclass.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void debugMessage(QString message);
 
 private slots:
     void on_actionExit_triggered();
@@ -38,18 +40,15 @@ public slots:
 private:
     bool debugMode;
     QMap<QString, QMap<QString, QString>> todoList;
+    QVector<EntryClass *> list;
     Ui::MainWindow *ui;
 
     void icsToTable(QString fullText);
-    void debugMessage(QString message);
     QString requestBody(QString requestType);
     void buildRequest(QString requestType);
     QString createAuth();
-    QString getValueFromIcs(QString fullText, QString searchvalue);
-    QString changeValueInIcs(QString fullText, QString searchValue, QString newValue);
-    QString insertValueInIcs(QString fullText, QString searchValue, QString newValue);
     void parseIcs(QString fullText);
-    void icsToMap(QString fullText);
+    void importFile(QString path);
 };
 
 

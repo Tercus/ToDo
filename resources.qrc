@@ -2,4 +2,7 @@
     <qresource prefix="/exampleData">
         <file>data/tasks.ics</file>
     </qresource>
+    <qresource prefix="/Storage">
+        <file>data/ToDo-List.xml</file>
+    </qresource>
 </RCC>

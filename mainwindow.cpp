@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "entryclass.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
@@ -36,26 +37,27 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_actionImport_ToDo_s_triggered()
 {
     QString file_name = QFileDialog::getOpenFileName(this, "Open a file", "", "*.ics");
-    QFile file(file_name);
-    if(file.open(QFile::ReadOnly | QFile::Text)){
+    importFile(file_name);
+}
+
+void MainWindow::on_actionDemo_Data_triggered()
+{
+    debugMessage("Using demo ics file.");
+    importFile(":/exampleData/data/tasks.ics");
+}
+
+void MainWindow::importFile(QString path)
+{
+    QFile file(path);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::information(this, "Title", "File not opened");
+    }
+    else {
         QTextStream in(&file);
         QString text = in.readAll();
         parseIcs(text);
         file.close();
     }
-}
-
-void MainWindow::on_actionDemo_Data_triggered()
-{
-    debugMessage("Filling plainTextField with demo ics file.");
-    QFile file(":/exampleData/data/tasks.ics");
-    if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::information(this,"Title","File not open");
-    }
-    QTextStream in(&file);
-    QString text = in.readAll();
-    parseIcs(text);
-    file.close();
 }
 
 void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
@@ -70,18 +72,8 @@ void MainWindow::on_actionGet_Calendars_from_Server_triggered()
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) {
-        ui->lineEdit_summary->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text());
-    }
-    else {
-        ui->lineEdit_summary->setText("");
-    }
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 3)) {
-        ui->textEdit_description->setText(ui->tableWidget->item(ui->listWidget->currentRow(), 3)->text());
-    }
-    else {
-        ui->textEdit_description->setText("");
-    }
+    ui->lineEdit_summary->setText(list[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
+    ui->textEdit_description->setText(list[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION"));
 }
 
 void MainWindow::debugMessage(QString message)
@@ -93,9 +85,8 @@ void MainWindow::debugMessage(QString message)
 
 void MainWindow::on_pushButton_clicked()
 {
-    qDebug() << "Number of todos:" << todoList.count();
-    qDebug() << "UIDs of entries:" << todoList.keys();
-    foreach (QString todo, todoList.keys()) {
-        qDebug() << todoList[todo];
+    for(int x = 0; x < list.count(); x++){
+        qDebug() << list[x]->returnKeyValue("SUMMARY");
+        ui->listWidget->addItem(list[x]->returnKeyValue("SUMMARY"));
     }
 }
