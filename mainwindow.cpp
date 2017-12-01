@@ -85,8 +85,5 @@ void MainWindow::debugMessage(QString message)
 
 void MainWindow::on_pushButton_clicked()
 {
-    for(int x = 0; x < list.count(); x++){
-        qDebug() << list[x]->returnKeyValue("SUMMARY");
-        ui->listWidget->addItem(list[x]->returnKeyValue("SUMMARY"));
-    }
+
 }

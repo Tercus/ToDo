@@ -14,6 +14,7 @@ void MainWindow::parseIcs(QString fullText)
                 EntryClass *tempEntry = new EntryClass;
                 tempEntry->fillIcsData(singleTodo + "END:VTODO");
                 list.push_back(tempEntry);
+                ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
             }
         }
     }
@@ -21,6 +22,7 @@ void MainWindow::parseIcs(QString fullText)
         EntryClass *tempEntry = new EntryClass;
         tempEntry->fillIcsData(fullText);
         list.push_back(tempEntry);
+        ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
     }
     else {
         debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
