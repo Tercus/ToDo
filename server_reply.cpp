@@ -6,6 +6,7 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 {
     QUrl url = reply->url();
     QString urlPath = url.path();
+    debugMessage("Reply came from:" + urlPath);
     QString replyText = reply->readAll();
 
     if (reply->error() != QNetworkReply::NoError) {

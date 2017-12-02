@@ -34,6 +34,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_SaveChanges_clicked();
+
 public slots:
     void requestFinished(QNetworkReply *reply);
 

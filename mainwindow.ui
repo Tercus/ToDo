@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>715</height>
+    <width>765</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,6 +67,9 @@
           <property name="editTriggers">
            <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
           </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -104,6 +107,13 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="pushButton_SaveChanges">
+           <property name="text">
+            <string>Save Changes</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -119,6 +129,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>100</height>
+         </size>
+        </property>
        </widget>
       </item>
      </layout>
@@ -130,7 +146,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>992</width>
+     <width>765</width>
      <height>19</height>
     </rect>
    </property>
@@ -174,15 +190,23 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
-   <property name="enabled">
-    <bool>true</bool>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>16</height>
+    </size>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionGet_ToDo_s_from_Server"/>
+   <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionImport_ToDo_s">
@@ -201,6 +225,10 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/images/Exit.svg</normaloff>:/images/images/Exit.svg</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -244,8 +272,15 @@
    </property>
   </action>
   <action name="actionGet_ToDo_s_from_Server">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/images/GetFromServer.svg</normaloff>:/images/images/GetFromServer.svg</iconset>
+   </property>
    <property name="text">
     <string>Get ToDo's from Server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
   <action name="actionGet_Calendars_from_Server">
@@ -255,6 +290,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

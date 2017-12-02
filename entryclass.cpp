@@ -46,10 +46,11 @@ QString EntryClass::returnKeyValue(QString key)
     }
 }
 
-int EntryClass::editKeyValue(QString key, QString value)
+int EntryClass::editKeyValue(QString key, QString newValue)
 {
     if(this->keys.contains(key)) {
-        this->values.value(this->keys.indexOf(key)) = value;
+        this->values[this->keys.indexOf(key)] = newValue;
+        this->flagEdited = 1;
         return 1;
     }
     else {
