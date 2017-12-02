@@ -270,6 +270,9 @@
    <property name="text">
     <string>Demo-Data</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionGet_ToDo_s_from_Server">
    <property name="icon">

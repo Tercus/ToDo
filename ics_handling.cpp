@@ -3,46 +3,45 @@
 
 void MainWindow::parseIcs(QString fullText)
 {
-    // RFC 5545: 3.1. -> requires long lines to be folded. Unfold them here
-    fullText.replace("\n ", "");
+    int firstBreak = fullText.indexOf("BEGIN:VTODO");
+    int secondBreak = fullText.indexOf("BEGIN:VTODO", firstBreak + 10); //skip the actual first one
+    int thirdBreak = fullText.lastIndexOf("END:VTODO") + 10; // >END:VTODO\n< those are 10 characters
 
-    if(fullText.count("BEGIN:VTODO") > 1) {
-        QStringList multipleTodo = fullText.split("END:VTODO");
-        foreach (QString singleTodo, multipleTodo) {
-            if(singleTodo.contains("BEGIN:VTODO")) {
-                EntryClass *tempEntry = new EntryClass;
-                tempEntry->fillIcsData(singleTodo + "END:VTODO");
-                todoList.push_back(tempEntry);
-                QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
-                tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
-                if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
-                    tempItem->setCheckState(Qt::Checked);
-                }
-                else {
-                    tempItem->setCheckState(Qt::Unchecked);
-                }
-                ui->listWidget->addItem(tempItem);
+    // Everything before the first TODO entry
+    QString leftPart = fullText.left(firstBreak);
 
-            }
-        }
+    // The whole of the first TODO entry
+    QString juicyPart = fullText.mid(firstBreak, secondBreak - firstBreak);
+
+    // Everything after the end of the first TODO entry until the end of the last TODO entry
+    QString leftoverPart = fullText.mid(secondBreak, thirdBreak - secondBreak);
+
+    // Everything after the last TODO entry
+    QString endPart = fullText.mid(thirdBreak);
+
+    QString completeTodo = leftPart + juicyPart + endPart;
+    QString restTodo = leftPart + leftoverPart + endPart;
+
+    // juicy Part is not in restTodo if there is more than one TODO, so start recursive loop
+    if(!restTodo.contains(juicyPart)){
+        parseIcs(restTodo);
     }
-    else if(fullText.count("BEGIN:VTODO") == 1) {
-        EntryClass *tempEntry = new EntryClass;
-        tempEntry->fillIcsData(fullText);
-        todoList.push_back(tempEntry);
-        QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
-        tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
-        if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
-            tempItem->setCheckState(Qt::Checked);
-        }
-        else {
-            tempItem->setCheckState(Qt::Unchecked);
-        }
-        ui->listWidget->addItem(tempItem);
+
+    // Create the entry and push into the main Todo-List
+    EntryClass *tempEntry = new EntryClass;
+    tempEntry->fillIcsData(completeTodo);
+    todoList.push_back(tempEntry);
+
+    // Add the newly created entry and add it to the listwidget
+    QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
+    tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
+    if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
+        tempItem->setCheckState(Qt::Checked);
     }
     else {
-        debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
+        tempItem->setCheckState(Qt::Unchecked);
     }
+    ui->listWidget->addItem(tempItem);
 }
 
 //#############################
