@@ -13,7 +13,16 @@ void MainWindow::parseIcs(QString fullText)
                 EntryClass *tempEntry = new EntryClass;
                 tempEntry->fillIcsData(singleTodo + "END:VTODO");
                 todoList.push_back(tempEntry);
-                ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
+                QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
+                tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
+                if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
+                    tempItem->setCheckState(Qt::Checked);
+                }
+                else {
+                    tempItem->setCheckState(Qt::Unchecked);
+                }
+                ui->listWidget->addItem(tempItem);
+
             }
         }
     }
@@ -21,7 +30,15 @@ void MainWindow::parseIcs(QString fullText)
         EntryClass *tempEntry = new EntryClass;
         tempEntry->fillIcsData(fullText);
         todoList.push_back(tempEntry);
-        ui->listWidget->addItem(tempEntry->returnKeyValue("SUMMARY"));
+        QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
+        tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
+        if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
+            tempItem->setCheckState(Qt::Checked);
+        }
+        else {
+            tempItem->setCheckState(Qt::Unchecked);
+        }
+        ui->listWidget->addItem(tempItem);
     }
     else {
         debugMessage("The provided Text does not contain any ToDo's. Please check your file.");
