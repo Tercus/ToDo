@@ -6,7 +6,6 @@
         <file>data/ToDo-List.xml</file>
     </qresource>
     <qresource prefix="/images">
-        <file>images/GetFromServer.png</file>
         <file>images/Add.svg</file>
         <file>images/Exit.svg</file>
         <file>images/GetFromServer.svg</file>
