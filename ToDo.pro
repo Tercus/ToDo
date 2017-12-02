@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,9 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    ics_handling.cpp \
+    server_request.cpp \
+    server_reply.cpp \
+    entryclass.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    entryclass.h
 
 FORMS    += mainwindow.ui
 

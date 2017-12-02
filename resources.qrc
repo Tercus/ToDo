@@ -2,4 +2,13 @@
     <qresource prefix="/exampleData">
         <file>data/tasks.ics</file>
     </qresource>
+    <qresource prefix="/Storage">
+        <file>data/ToDo-List.xml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/Add.svg</file>
+        <file>images/Exit.svg</file>
+        <file>images/GetFromServer.svg</file>
+        <file>images/more.svg</file>
+    </qresource>
 </RCC>

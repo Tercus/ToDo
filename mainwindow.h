@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QtNetwork/QNetworkReply>
+#include "entryclass.h"
 
 namespace Ui {
 class MainWindow;
@@ -15,24 +17,40 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void debugMessage(QString message);
 
 private slots:
     void on_actionExit_triggered();
 
-    void on_pushButton_parse_clicked();
-
-    void on_pushButton_openFile_clicked();
-
-    void on_pushButton_demo_clicked();
-
-    void on_pushButton_beautify_clicked();
-
     void onListWidgetlItemClicked(QListWidgetItem *);
 
-    void on_pushButton_closeView_clicked();
+    void on_actionImport_ToDo_s_triggered();
+
+    void on_actionDemo_Data_triggered();
+
+    void on_actionGet_ToDo_s_from_Server_triggered();
+
+    void on_actionGet_Calendars_from_Server_triggered();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_SaveChanges_clicked();
+
+public slots:
+    void requestFinished(QNetworkReply *reply);
 
 private:
+    bool debugMode;
+    QVector<EntryClass *> todoList;
     Ui::MainWindow *ui;
+
+    void icsToTable(QString fullText);
+    QString requestBody(QString requestType);
+    void buildRequest(QString requestType);
+    QString createAuth();
+    void parseIcs(QString fullText);
+    void importFile(QString path);
 };
+
 
 #endif // MAINWINDOW_H

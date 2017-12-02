@@ -1,19 +1,26 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "entryclass.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include <QMultiMap>
+#include <QMap>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)),
-                this, SLOT(onListWidgetlItemClicked(QListWidgetItem*)));
-    ui->groupBox->setHidden(true);
+    connect(ui->listWidget,
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            this,
+            SLOT(onListWidgetlItemClicked(QListWidgetItem*))
+            );
+
+    debugMode = true;
 //    ui->tableWidget->setHidden(true);
 }
 
@@ -27,86 +34,65 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
-void MainWindow::on_pushButton_parse_clicked()
-{
-    int index = 0;
-    QStringList headers;
-    QString plainTextEditContents = ui->plainTextEdit->toPlainText();
-    QStringList lines = plainTextEditContents.split("\n");
-
-    foreach (QString text, lines) {
-        if (!text.isEmpty())
-        {
-            if(text == "BEGIN:VTODO") index++;
-
-            if(text.contains("UID") ||
-            text.contains("DTSTAMP") ||
-            text.contains("DUE;VALUE=DATE") ||
-            text.contains("LAST-MODIFIED") ||
-            text.contains("PRIORITY") ||
-            text.contains("SUMMARY") ||
-            text.contains("DESCRIPTION")) {
-                QStringList line = text.split(':');
-                if(!headers.contains(line[0])) {
-                    // Add new header
-                    headers << line[0];
-                    ui->tableWidget->setColumnCount(headers.count());
-                    ui->tableWidget->setHorizontalHeaderItem(headers.count()-1, new QTableWidgetItem(line[0]));
-                }
-                ui->tableWidget->setRowCount(index);
-                ui->tableWidget->setItem(index-1, headers.indexOf(line[0]), new QTableWidgetItem(line[1]));
-            }
-        }
-    }
-    index = 0;
-}
-
-void MainWindow::on_pushButton_openFile_clicked()
+void MainWindow::on_actionImport_ToDo_s_triggered()
 {
     QString file_name = QFileDialog::getOpenFileName(this, "Open a file", "", "*.ics");
-    QFile file(file_name);
-    if(file.open(QFile::ReadOnly | QFile::Text)){
+    importFile(file_name);
+}
+
+void MainWindow::on_actionDemo_Data_triggered()
+{
+    debugMessage("Using demo ics file.");
+    importFile(":/exampleData/data/tasks.ics");
+}
+
+void MainWindow::importFile(QString path)
+{
+    QFile file(path);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::information(this, "Title", "File not opened");
+    }
+    else {
         QTextStream in(&file);
         QString text = in.readAll();
-        ui->plainTextEdit->setPlainText(text);
+        parseIcs(text);
         file.close();
     }
 }
 
-void MainWindow::on_pushButton_demo_clicked()
+void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
 {
-    QFile file(":/exampleData/data/tasks.ics");
-    if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::information(this,"Title","File not open");
-    }
-    QTextStream in(&file);
-    QString text = in.readAll();
-    ui->plainTextEdit->setPlainText(text);
-    file.close();
+    buildRequest("get_todo_list");
 }
 
-void MainWindow::on_pushButton_beautify_clicked()
+void MainWindow::on_actionGet_Calendars_from_Server_triggered()
 {
-    for (int var = 0; var < ui->tableWidget->rowCount(); var++) {
-        ui->listWidget->addItem(ui->tableWidget->item(var,2)->text());
-// This would make the have checkboxes, but sadly that does not work and makes them unclickable.
-//        ui->listWidget->item(var)->setFlags(Qt::ItemIsUserCheckable);
-//        ui->listWidget->item(var)->setCheckState(Qt::Unchecked);
-    }
+    buildRequest("get_calendar_list");
 }
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    ui->groupBox->setHidden(false);
-    QString summary = "";
-    QString description = "";
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 2)) summary = ui->tableWidget->item(ui->listWidget->currentRow(), 2)->text();
-    if(ui->tableWidget->item(ui->listWidget->currentRow(), 4)) description = ui->tableWidget->item(ui->listWidget->currentRow(), 4)->text();
-    ui->lineEdit_summary->setText(summary);
-    ui->textEdit_description->setText(description);
+    ui->lineEdit_summary->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
+    ui->textEdit_description->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION").replace("\\n", "\n"));
 }
 
-void MainWindow::on_pushButton_closeView_clicked()
+void MainWindow::debugMessage(QString message)
 {
-    ui->groupBox->setHidden(true);
+    if(debugMode) {
+        ui->debugField->appendPlainText(message + "\n");
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    qDebug() << ui->listWidget->currentRow();
+    if(ui->listWidget->currentRow() >= 0) {
+        debugMessage(todoList.value(ui->listWidget->currentRow())->returnIcs());
+    }
+}
+
+void MainWindow::on_pushButton_SaveChanges_clicked()
+{
+    todoList[ui->listWidget->currentRow()]->editKeyValue("DESCRIPTION",ui->textEdit_description->toPlainText());
+    todoList[ui->listWidget->currentRow()]->editKeyValue("SUMMARY",ui->lineEdit_summary->text());
 }
