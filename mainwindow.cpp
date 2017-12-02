@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
             );
 
     debugMode = true;
-//    ui->tableWidget->setHidden(true);
 }
 
 MainWindow::~MainWindow()

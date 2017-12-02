@@ -12,6 +12,8 @@ void EntryClass::fillIcsData(QString icsData)
     // RFC 5545: 3.1. -> requires long lines to be folded. Unfold them here
     icsData.replace("\n ", "");
 
+    // Each line *must* be a new key-value pair.
+    // Splitting at \n ignores \\n inside of multiline-text
     QStringList icsFields = icsData.split("\n");
     foreach (QString entry, icsFields) {
         QStringList keyAndValue = entry.split(":");
@@ -41,7 +43,10 @@ QString EntryClass::returnKeyValue(QString key)
         return this->values.value(this->keys.indexOf(key));
     }
     else {
-        qDebug() << "Error: Key" << key << "doesn't exist for entry" << this->returnKeyValue("SUMMARY");
+        qDebug() << "Error: Key"
+                 << key
+                 << "doesn't exist for entry"
+                 << this->returnKeyValue("SUMMARY");
         return("");
     }
 }
