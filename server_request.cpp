@@ -4,6 +4,11 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkAccessManager>
 
+void MainWindow::sendUpdates(QString URL, QString UID, QString ics)
+{
+
+}
+
 void MainWindow::buildRequest(QString requestType)
 {
     QNetworkRequest request(ui->lineEdit_server->text());

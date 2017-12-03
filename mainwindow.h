@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QtNetwork/QNetworkReply>
+#include <QDomElement>
 #include "entryclass.h"
 
 namespace Ui {
@@ -50,6 +51,8 @@ private:
     QString createAuth();
     void parseIcs(QString fullText);
     void importFile(QString path);
+    void sendUpdates(QString URL, QString UID, QString ics);
+    void NodeRunner(QDomNodeList Nodes);
 };
 
 
