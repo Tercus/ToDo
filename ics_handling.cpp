@@ -3,44 +3,52 @@
 
 void MainWindow::parseIcs(QString fullText)
 {
+    if(fullText.count("BEGIN:VTODO") > 1) {
+        splitIcs(fullText);
+    }
+
+    // Create the entry and push into the main Todo-List
+    EntryClass *tempEntry = new EntryClass;
+    tempEntry->fillIcsData(fullText);
+    todoList.push_back(tempEntry);
+
+    // Add the newly created entry and add it to the listwidget
+    addEntrytoList(tempEntry->returnKeyValue("SUMMARY"), ((tempEntry->returnKeyValue("STATUS") == "COMPLETED")?true:false));
+}
+
+
+void MainWindow::splitIcs(QString fullText)
+{
     int firstBreak = fullText.indexOf("BEGIN:VTODO");
     int secondBreak = fullText.indexOf("BEGIN:VTODO", firstBreak + 10); //skip the actual first one
     int thirdBreak = fullText.lastIndexOf("END:VTODO") + 10; // >END:VTODO\n< those are 10 characters
 
     // Everything before the first TODO entry
     QString leftPart = fullText.left(firstBreak);
-
     // The whole of the first TODO entry
     QString juicyPart = fullText.mid(firstBreak, secondBreak - firstBreak);
-
     // Everything after the end of the first TODO entry until the end of the last TODO entry
     QString leftoverPart = fullText.mid(secondBreak, thirdBreak - secondBreak);
-
     // Everything after the last TODO entry
     QString endPart = fullText.mid(thirdBreak);
 
     QString completeTodo = leftPart + juicyPart + endPart;
     QString restTodo = leftPart + leftoverPart + endPart;
 
+    parseIcs(completeTodo);
+
     // juicy Part is not in restTodo if there is more than one TODO, so start recursive loop
     if(!restTodo.contains(juicyPart)){
         parseIcs(restTodo);
     }
+}
 
-    // Create the entry and push into the main Todo-List
-    EntryClass *tempEntry = new EntryClass;
-    tempEntry->fillIcsData(completeTodo);
-    todoList.push_back(tempEntry);
 
-    // Add the newly created entry and add it to the listwidget
-    QListWidgetItem *tempItem = new QListWidgetItem(tempEntry->returnKeyValue("SUMMARY"), ui->listWidget);
+void MainWindow::addEntrytoList(QString entryName, bool completed)
+{
+    QListWidgetItem *tempItem = new QListWidgetItem(entryName, ui->listWidget);
     tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
-    if(tempEntry->returnKeyValue("STATUS") == "COMPLETED") {
-        tempItem->setCheckState(Qt::Checked);
-    }
-    else {
-        tempItem->setCheckState(Qt::Unchecked);
-    }
+    tempItem->setCheckState((completed)?Qt::Checked:Qt::Unchecked);
     ui->listWidget->addItem(tempItem);
 }
 

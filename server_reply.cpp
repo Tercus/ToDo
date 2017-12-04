@@ -32,32 +32,8 @@ void MainWindow::requestFinished(QNetworkReply *reply)
     QList<QMap<QString, QString>> testing;
     for(int x = 0; x < responseNodes.count(); x++) {
         testing.append(NodeRunner(responseNodes.at(x)));
+        parseIcs(testing.at(x).value("cal:calendar-data"));
     }
-    qDebug() << testing;
-//    for(int x = 0; x < responseNodes.count(); x++) {
-//        QDomNode singleResponseNode = responseNodes.at(x);
-//        QString URL = singleResponseNode.childNodes().at(0).toElement().QDomElement::text();
-//        QString etag = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(0).toElement().QDomElement::text();
-//        QString calenderData = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(2).toElement().QDomElement::text();
-//        qDebug() << URL;
-//        qDebug() << calenderData;
-//    }
-
-
-//    QDomNodeList todos = doc.elementsByTagName("d:prop");
-//    qDebug() << "Number of ToDos:" << todos.count();
-//    for(int x = 0; x < todos.count(); x++) {
-//        QDomNode root = todos.at(x);
-////        debugMessage(root.nodeName().toUtf8() + " has " + root.childNodes().count() + " childnodes");
-//        for(int y = 0; y < root.childNodes().count(); y++) {
-//            QDomNode node = root.childNodes().at(y);
-////            debugMessage(node.nodeName().toUtf8() + ":\n" + node.toElement().QDomElement::text());
-//            if(node.nodeName().toUtf8() == "cal:calendar-data" && node.toElement().QDomElement::text().contains("BEGIN:VTODO")) {
-//                parseIcs(node.toElement().QDomElement::text());
-//            }
-//        }
-//    }
-
 }
 
 QMap<QString, QString> MainWindow::NodeRunner(QDomNode Node)

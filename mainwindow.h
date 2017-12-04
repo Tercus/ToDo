@@ -20,6 +20,7 @@ public:
     ~MainWindow();
     void debugMessage(QString message);
 
+    void addEntrytoList(QString entryName, bool completed);
 private slots:
     void on_actionExit_triggered();
 
@@ -53,6 +54,7 @@ private:
     void importFile(QString path);
     void sendUpdates(QString URL, QString UID, QString ics);
     QMap<QString, QString> NodeRunner(QDomNode Node);
+    void splitIcs(QString fullText);
 };
 
 
