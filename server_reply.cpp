@@ -29,15 +29,19 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 //          |-> d:status
 
     QDomNodeList responseNodes = doc.elementsByTagName("d:response");
-//    NodeRunner(responseNodes);
+    QList<QMap<QString, QString>> testing;
     for(int x = 0; x < responseNodes.count(); x++) {
-        QDomNode singleResponseNode = responseNodes.at(x);
-        QString URL = singleResponseNode.childNodes().at(0).toElement().QDomElement::text();
-        QString etag = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(0).toElement().QDomElement::text();
-        QString calenderData = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(2).toElement().QDomElement::text();
-        qDebug() << URL;
-        qDebug() << calenderData;
+        testing.append(NodeRunner(responseNodes.at(x)));
     }
+    qDebug() << testing;
+//    for(int x = 0; x < responseNodes.count(); x++) {
+//        QDomNode singleResponseNode = responseNodes.at(x);
+//        QString URL = singleResponseNode.childNodes().at(0).toElement().QDomElement::text();
+//        QString etag = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(0).toElement().QDomElement::text();
+//        QString calenderData = singleResponseNode.childNodes().at(1).childNodes().at(0).childNodes().at(2).toElement().QDomElement::text();
+//        qDebug() << URL;
+//        qDebug() << calenderData;
+//    }
 
 
 //    QDomNodeList todos = doc.elementsByTagName("d:prop");
@@ -56,20 +60,17 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 
 }
 
-void MainWindow::NodeRunner(QDomNodeList Nodes)
+QMap<QString, QString> MainWindow::NodeRunner(QDomNode Node)
 {
-    for(int x = 0; x < Nodes.count(); x++) {
-        if(Nodes.at(x).nodeName().toUtf8() == "d:href") {
-            qDebug() << "Found href:" << Nodes.at(x).toElement().QDomElement::text();
-        }
-        if(Nodes.at(x).nodeName().toUtf8() == "d:getetag") {
-            qDebug() << "Found etag:" << Nodes.at(x).toElement().QDomElement::text();
-        }
-        if(Nodes.at(x).nodeName().toUtf8() == "cal:calendar-data") {
-            qDebug() << "Found cal-data:" << Nodes.at(x).toElement().QDomElement::text();
-        }
-        if(Nodes.at(x).hasChildNodes()) {
-            NodeRunner(Nodes.at(x).childNodes());
-        }
+    QMap<QString, QString> values;
+    QString currentNodeName = Node.nodeName().toUtf8();
+    qDebug() << "Current Node Name:" << currentNodeName;
+    if(currentNodeName == "d:href" || currentNodeName == "d:getetag" || currentNodeName == "cal:calendar-data") {
+        values.insert(currentNodeName, Node.toElement().QDomElement::text());
     }
+    qDebug() << "Node" << currentNodeName << "has" << Node.childNodes().count() << "children";
+    for (int x = 0; x < Node.childNodes().count(); x++) {
+        values.unite(NodeRunner(Node.childNodes().at(x)));
+    }
+    return(values);
 }

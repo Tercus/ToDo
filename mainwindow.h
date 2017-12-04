@@ -52,7 +52,7 @@ private:
     void parseIcs(QString fullText);
     void importFile(QString path);
     void sendUpdates(QString URL, QString UID, QString ics);
-    void NodeRunner(QDomNodeList Nodes);
+    QMap<QString, QString> NodeRunner(QDomNode Node);
 };
 
 
