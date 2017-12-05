@@ -82,12 +82,14 @@ void MainWindow::debugMessage(QString message)
     }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_test_clicked()
 {
-    qDebug() << ui->listWidget->currentRow();
-    if(ui->listWidget->currentRow() >= 0) {
-        debugMessage(todoList.value(ui->listWidget->currentRow())->returnIcs());
-    }
+//    sendUpdates(QString URL, QString UID, QString ics);
+    todoList.at(ui->listWidget->currentRow())->addKeyValue("STATUS", "COMPLETED");
+    QString url = "https://nextcloud.timesinks.de" + todoList.at(ui->listWidget->currentRow())->returnHref();
+    QString etag = todoList.at(ui->listWidget->currentRow())->returnEtag();
+    QString ics = todoList.at(ui->listWidget->currentRow())->returnIcs();
+    sendUpdates(url, etag, ics);
 }
 
 void MainWindow::on_pushButton_SaveChanges_clicked()

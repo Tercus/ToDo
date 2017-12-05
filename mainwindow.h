@@ -20,31 +20,23 @@ public:
     ~MainWindow();
     void debugMessage(QString message);
 
-    void addEntrytoList(QString entryName, bool completed);
 private slots:
     void on_actionExit_triggered();
-
     void onListWidgetlItemClicked(QListWidgetItem *);
-
     void on_actionImport_ToDo_s_triggered();
-
     void on_actionDemo_Data_triggered();
-
     void on_actionGet_ToDo_s_from_Server_triggered();
-
     void on_actionGet_Calendars_from_Server_triggered();
-
-    void on_pushButton_clicked();
-
+    void on_pushButton_test_clicked();
     void on_pushButton_SaveChanges_clicked();
 
 public slots:
     void requestFinished(QNetworkReply *reply);
 
 private:
+    Ui::MainWindow *ui;
     bool debugMode;
     QVector<EntryClass *> todoList;
-    Ui::MainWindow *ui;
 
     void icsToTable(QString fullText);
     QString requestBody(QString requestType);
@@ -52,9 +44,10 @@ private:
     QString createAuth();
     void parseIcs(QString fullText);
     void importFile(QString path);
-    void sendUpdates(QString URL, QString UID, QString ics);
+    void sendUpdates(QString url, QString etag, QString ics);
     QMap<QString, QString> NodeRunner(QDomNode Node);
     void splitIcs(QString fullText);
+    void addEntrytoList(QString entryName, bool completed);
 };
 
 

@@ -29,10 +29,14 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 //          |-> d:status
 
     QDomNodeList responseNodes = doc.elementsByTagName("d:response");
-    QList<QMap<QString, QString>> testing;
+    QList<QMap<QString, QString>> todoNodes;
     for(int x = 0; x < responseNodes.count(); x++) {
-        testing.append(NodeRunner(responseNodes.at(x)));
-        parseIcs(testing.at(x).value("cal:calendar-data"));
+        todoNodes.append(NodeRunner(responseNodes.at(x)));
+//        parseIcs(todoNodes.at(x).value("cal:calendar-data"));
+        EntryClass *tempEntry = new EntryClass(todoNodes.at(x).value("d:getetag"),todoNodes.at(x).value("d:href"),todoNodes.at(x).value("cal:calendar-data"));
+        todoList.push_back(tempEntry);
+
+        addEntrytoList(tempEntry->returnKeyValue("SUMMARY"), ((tempEntry->returnKeyValue("STATUS") == "COMPLETED")?true:false));
     }
 }
 

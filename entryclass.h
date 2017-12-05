@@ -6,17 +6,21 @@
 class EntryClass
 {
 public:
-    EntryClass();
+    EntryClass(QString etagValue, QString hrefValue, QString icsValue);
     QString returnIcs();
     QString returnKeyValue(QString key);
     int editKeyValue(QString key, QString newValue);
     void setEtag(QString etagValue);
-    void fillIcsData(QString icsData);
+    QString returnEtag();
+    QString returnHref();
+    int addKeyValue(QString newKey, QString newValue);
 private:
     QString etag;
+    QString href;
     QVector<QString> keys;
     QVector<QString> values;
     int flagEdited;
+    void fillIcsData(QString icsData);
 };
 
 #endif // ENTRYCLASS_H

@@ -2,9 +2,12 @@
 #include "ui_mainwindow.h"
 #include "entryclass.h"
 
-EntryClass::EntryClass()
+EntryClass::EntryClass(QString etagValue, QString hrefValue, QString icsValue)
 {
     qDebug() << "EntryClass created";
+    etag = etagValue;
+    href = hrefValue;
+    this->fillIcsData(icsValue);
 }
 
 void EntryClass::fillIcsData(QString icsData)
@@ -26,6 +29,16 @@ void EntryClass::fillIcsData(QString icsData)
 void EntryClass::setEtag(QString etagValue)
 {
     this->etag = etagValue;
+}
+
+QString EntryClass::returnEtag()
+{
+    return etag;
+}
+
+QString EntryClass::returnHref()
+{
+    return href;
 }
 
 QString EntryClass::returnIcs()
@@ -61,5 +74,19 @@ int EntryClass::editKeyValue(QString key, QString newValue)
     else {
         qDebug() << "Error: Key doesn't exist";
         return -1;
+    }
+}
+
+int EntryClass::addKeyValue(QString newKey, QString newValue)
+{
+    if(this->keys.contains(newKey)) {
+        this->values[this->keys.indexOf(newKey)] = newValue;
+        this->flagEdited = 1;
+        return 1;
+    }
+    else {
+        this->keys.insert(this->keys.indexOf("SUMMARY"), newKey);
+        this->values.insert(this->keys.indexOf(newKey), newValue);
+        return 1;
     }
 }

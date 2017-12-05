@@ -8,12 +8,12 @@ void MainWindow::parseIcs(QString fullText)
     }
 
     // Create the entry and push into the main Todo-List
-    EntryClass *tempEntry = new EntryClass;
-    tempEntry->fillIcsData(fullText);
-    todoList.push_back(tempEntry);
+//    EntryClass *tempEntry = new EntryClass;
+//    tempEntry->fillIcsData(fullText);
+//    todoList.push_back(tempEntry);
 
     // Add the newly created entry and add it to the listwidget
-    addEntrytoList(tempEntry->returnKeyValue("SUMMARY"), ((tempEntry->returnKeyValue("STATUS") == "COMPLETED")?true:false));
+//    addEntrytoList(tempEntry->returnKeyValue("SUMMARY"), ((tempEntry->returnKeyValue("STATUS") == "COMPLETED")?true:false));
 }
 
 
