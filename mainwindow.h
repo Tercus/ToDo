@@ -23,12 +23,11 @@ public:
 private slots:
     void on_actionExit_triggered();
     void onListWidgetlItemClicked(QListWidgetItem *);
-    void on_actionImport_ToDo_s_triggered();
-    void on_actionDemo_Data_triggered();
     void on_actionGet_ToDo_s_from_Server_triggered();
-    void on_actionGet_Calendars_from_Server_triggered();
     void on_pushButton_test_clicked();
     void on_pushButton_SaveChanges_clicked();
+
+    void on_pushButton_clicked();
 
 public slots:
     void requestFinished(QNetworkReply *reply);
@@ -42,12 +41,11 @@ private:
     QString requestBody(QString requestType);
     void buildRequest(QString requestType);
     QString createAuth();
-    void parseIcs(QString fullText);
     void importFile(QString path);
     void sendUpdates(QString url, QString etag, QString ics);
     QMap<QString, QString> NodeRunner(QDomNode Node);
-    void splitIcs(QString fullText);
-    void addEntrytoList(QString entryName, bool completed);
+    QStringList split_ics(QString icsValue);
+    void add_todo_entry(QString entryName, bool completed);
 };
 
 

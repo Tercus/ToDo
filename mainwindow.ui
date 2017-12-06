@@ -6,80 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>605</height>
+    <width>803</width>
+    <height>626</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0" colspan="2">
-           <widget class="QLineEdit" name="lineEdit_server">
-            <property name="text">
-             <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/</string>
-            </property>
-            <property name="placeholderText">
-             <string>Server</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLineEdit" name="lineEdit_username">
-            <property name="text">
-             <string>Tobias</string>
-            </property>
-            <property name="placeholderText">
-             <string>Username</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit_password">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
-            </property>
-            <property name="placeholderText">
-             <string>Password</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QListWidget" name="listWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="editTriggers">
-           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_test">
-          <property name="text">
-           <string>Test</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QListWidget" name="listWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
@@ -87,11 +39,21 @@
          <string>Task Info</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="lineEdit_summary"/>
-         </item>
          <item row="3" column="0" colspan="2">
-          <widget class="QTextEdit" name="textEdit_description"/>
+          <widget class="QTextEdit" name="textEdit_description">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>100</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_summary">
@@ -107,7 +69,10 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="1" column="0" colspan="2">
+          <widget class="QLineEdit" name="lineEdit_summary"/>
+         </item>
+         <item row="4" column="0" colspan="2">
           <widget class="QPushButton" name="pushButton_SaveChanges">
            <property name="text">
             <string>Save Changes</string>
@@ -120,24 +85,117 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPlainTextEdit" name="debugField">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>100</height>
-         </size>
-        </property>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QWidget" name="SettingsPage">
+       <attribute name="title">
+        <string>Settings</string>
+       </attribute>
+       <widget class="QWidget" name="">
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLineEdit" name="lineEdit_server">
+           <property name="text">
+            <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/</string>
+           </property>
+           <property name="placeholderText">
+            <string>Server</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="lineEdit_username">
+           <property name="text">
+            <string>Tobias</string>
+           </property>
+           <property name="placeholderText">
+            <string>Username</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEdit_password">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+           <property name="placeholderText">
+            <string>Password</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-      </item>
-     </layout>
+      </widget>
+      <widget class="QWidget" name="DebugPage">
+       <attribute name="title">
+        <string>Debug</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QPlainTextEdit" name="debugField">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="ButtonPage">
+       <attribute name="title">
+        <string>Buttons</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Add todo to Toolbox</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_test">
+          <property name="text">
+           <string>Send edited Task to server</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolBox" name="toolBox">
+      <widget class="QWidget" name="page_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>213</width>
+         <height>530</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Page 2</string>
+       </attribute>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -146,50 +204,26 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>765</width>
+     <width>803</width>
      <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTasks">
-    <property name="title">
-     <string>File</string>
+    <property name="enabled">
+     <bool>true</bool>
     </property>
-    <addaction name="actionDemo_Data"/>
-    <addaction name="actionImport_ToDo_s"/>
-    <addaction name="actionExport_ToDo_s"/>
-    <addaction name="separator"/>
-    <addaction name="actionSettings"/>
-    <addaction name="separator"/>
+    <property name="title">
+     <string>Tasks</string>
+    </property>
+    <addaction name="actionGet_ToDo_s_from_Server"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-    <addaction name="actionShow_closed_tasks"/>
-    <addaction name="separator"/>
-    <addaction name="actionGet_ToDo_s_from_Server"/>
-    <addaction name="actionGet_Calendars_from_Server"/>
-   </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="actionPreferences"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionAbout_Qt"/>
-    <addaction name="actionAbout_ToDo"/>
-   </widget>
    <addaction name="menuTasks"/>
-   <addaction name="menuView"/>
-   <addaction name="menuSettings"/>
-   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="movable">
     <bool>false</bool>
    </property>
@@ -200,7 +234,7 @@
     </size>
    </property>
    <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
+    <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
@@ -208,22 +242,6 @@
    <addaction name="actionGet_ToDo_s_from_Server"/>
    <addaction name="actionExit"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionImport_ToDo_s">
-   <property name="text">
-    <string>Import ToDo's</string>
-   </property>
-  </action>
-  <action name="actionClose_selected">
-   <property name="text">
-    <string>Close selected</string>
-   </property>
-  </action>
-  <action name="actionRe_open_selected">
-   <property name="text">
-    <string>Re-open selected</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="icon">
     <iconset resource="resources.qrc">
@@ -232,46 +250,8 @@
    <property name="text">
     <string>Exit</string>
    </property>
-  </action>
-  <action name="actionShow_closed_tasks">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Show closed tasks</string>
-   </property>
-  </action>
-  <action name="actionPreferences">
-   <property name="text">
-    <string>Preferences</string>
-   </property>
-  </action>
-  <action name="actionAbout_Qt">
-   <property name="text">
-    <string>About Qt</string>
-   </property>
-  </action>
-  <action name="actionAbout_ToDo">
-   <property name="text">
-    <string>About ToDo</string>
-   </property>
-  </action>
-  <action name="actionExport_ToDo_s">
-   <property name="text">
-    <string>Export ToDo's</string>
-   </property>
-  </action>
-  <action name="actionSettings">
-   <property name="text">
-    <string>Settings</string>
-   </property>
-  </action>
-  <action name="actionDemo_Data">
-   <property name="text">
-    <string>Demo-Data</string>
-   </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string>Alt+Q</string>
    </property>
   </action>
   <action name="actionGet_ToDo_s_from_Server">
@@ -284,11 +264,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
-   </property>
-  </action>
-  <action name="actionGet_Calendars_from_Server">
-   <property name="text">
-    <string>Get Calendars from Server</string>
    </property>
   </action>
  </widget>

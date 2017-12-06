@@ -28,35 +28,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::add_todo_entry(QString entryName, bool completed)
+{
+    QListWidgetItem *tempItem = new QListWidgetItem(entryName, ui->listWidget);
+    tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
+    tempItem->setCheckState((completed)?Qt::Checked:Qt::Unchecked);
+    ui->listWidget->addItem(tempItem);
+
+    QFrame *frame = new QFrame;
+    QLabel *label1 = new QLabel("Summary:");
+    QLineEdit *linedit = new QLineEdit(entryName);
+    QLabel *label2 = new QLabel("Description:");
+    QTextEdit *textedit = new QTextEdit();
+    QPushButton *button = new QPushButton("Save changes");
+
+    QVBoxLayout *box = new QVBoxLayout();
+    box->addWidget(label1);
+    box->addWidget(linedit);
+    box->addWidget(label2);
+    box->addWidget(textedit);
+    box->addWidget(button);
+    frame->setLayout(box);
+
+    ui->toolBox->addItem(frame, entryName);
+}
+
 void MainWindow::on_actionExit_triggered()
 {
     close();
-}
-
-void MainWindow::on_actionImport_ToDo_s_triggered()
-{
-    QString file_name = QFileDialog::getOpenFileName(this, "Open a file", "", "*.ics");
-    importFile(file_name);
-}
-
-void MainWindow::on_actionDemo_Data_triggered()
-{
-    debugMessage("Using demo ics file.");
-    importFile(":/exampleData/data/tasks.ics");
-}
-
-void MainWindow::importFile(QString path)
-{
-    QFile file(path);
-    if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::information(this, "Title", "File not opened");
-    }
-    else {
-        QTextStream in(&file);
-        QString text = in.readAll();
-        parseIcs(text);
-        file.close();
-    }
 }
 
 void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
@@ -64,15 +63,10 @@ void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
     buildRequest("get_todo_list");
 }
 
-void MainWindow::on_actionGet_Calendars_from_Server_triggered()
-{
-    buildRequest("get_calendar_list");
-}
-
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
 {
-    ui->lineEdit_summary->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
-    ui->textEdit_description->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION").replace("\\n", "\n"));
+    ui->lineEdit_summary->setText(todoList[ui->listWidget->currentRow()]->get_key_value("SUMMARY"));
+    ui->textEdit_description->setText(todoList[ui->listWidget->currentRow()]->get_key_value("DESCRIPTION").replace("\\n", "\n"));
 }
 
 void MainWindow::debugMessage(QString message)
@@ -85,15 +79,35 @@ void MainWindow::debugMessage(QString message)
 void MainWindow::on_pushButton_test_clicked()
 {
 //    sendUpdates(QString URL, QString UID, QString ics);
-    todoList.at(ui->listWidget->currentRow())->addKeyValue("STATUS", "COMPLETED");
-    QString url = "https://nextcloud.timesinks.de" + todoList.at(ui->listWidget->currentRow())->returnHref();
-    QString etag = todoList.at(ui->listWidget->currentRow())->returnEtag();
-    QString ics = todoList.at(ui->listWidget->currentRow())->returnIcs();
+    todoList.at(ui->listWidget->currentRow())->add_key_value("STATUS", "COMPLETED");
+    QString url = "https://nextcloud.timesinks.de" + todoList.at(ui->listWidget->currentRow())->get_href();
+    QString etag = todoList.at(ui->listWidget->currentRow())->get_etag();
+    QString ics = todoList.at(ui->listWidget->currentRow())->get_ics();
     sendUpdates(url, etag, ics);
 }
 
 void MainWindow::on_pushButton_SaveChanges_clicked()
 {
-    todoList[ui->listWidget->currentRow()]->editKeyValue("DESCRIPTION",ui->textEdit_description->toPlainText());
-    todoList[ui->listWidget->currentRow()]->editKeyValue("SUMMARY",ui->lineEdit_summary->text());
+    todoList[ui->listWidget->currentRow()]->edit_key_value("DESCRIPTION",ui->textEdit_description->toPlainText());
+    todoList[ui->listWidget->currentRow()]->edit_key_value("SUMMARY",ui->lineEdit_summary->text());
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    QFrame *frame1 = new QFrame;
+    QLabel *label1 = new QLabel("Summary:");
+    QLineEdit *linedit = new QLineEdit();
+    QLabel *label2 = new QLabel("Description:");
+    QTextEdit *textedit = new QTextEdit();
+    QPushButton *button = new QPushButton("Save changes");
+
+    QVBoxLayout *box = new QVBoxLayout();
+    box->addWidget(label1);
+    box->addWidget(linedit);
+    box->addWidget(label2);
+    box->addWidget(textedit);
+    box->addWidget(button);
+    frame1->setLayout(box);
+
+    ui->toolBox->addItem(frame1, "Shabam");
 }

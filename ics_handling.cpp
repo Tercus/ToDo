@@ -1,55 +1,32 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-void MainWindow::parseIcs(QString fullText)
+QStringList MainWindow::split_ics(QString icsValue)
 {
-    if(fullText.count("BEGIN:VTODO") > 1) {
-        splitIcs(fullText);
-    }
-
-    // Create the entry and push into the main Todo-List
-//    EntryClass *tempEntry = new EntryClass;
-//    tempEntry->fillIcsData(fullText);
-//    todoList.push_back(tempEntry);
-
-    // Add the newly created entry and add it to the listwidget
-//    addEntrytoList(tempEntry->returnKeyValue("SUMMARY"), ((tempEntry->returnKeyValue("STATUS") == "COMPLETED")?true:false));
-}
-
-
-void MainWindow::splitIcs(QString fullText)
-{
-    int firstBreak = fullText.indexOf("BEGIN:VTODO");
-    int secondBreak = fullText.indexOf("BEGIN:VTODO", firstBreak + 10); //skip the actual first one
-    int thirdBreak = fullText.lastIndexOf("END:VTODO") + 10; // >END:VTODO\n< those are 10 characters
+    QStringList icsList;
+    int firstBreak = icsValue.indexOf("BEGIN:VTODO");
+    int secondBreak = icsValue.indexOf("BEGIN:VTODO", firstBreak + 10); //skip the actual first one
+    int thirdBreak = icsValue.lastIndexOf("END:VTODO") + 10; // >END:VTODO\n< those are 10 characters
 
     // Everything before the first TODO entry
-    QString leftPart = fullText.left(firstBreak);
+    QString leftPart = icsValue.left(firstBreak);
     // The whole of the first TODO entry
-    QString juicyPart = fullText.mid(firstBreak, secondBreak - firstBreak);
+    QString juicyPart = icsValue.mid(firstBreak, secondBreak - firstBreak);
     // Everything after the end of the first TODO entry until the end of the last TODO entry
-    QString leftoverPart = fullText.mid(secondBreak, thirdBreak - secondBreak);
+    QString leftoverPart = icsValue.mid(secondBreak, thirdBreak - secondBreak);
     // Everything after the last TODO entry
-    QString endPart = fullText.mid(thirdBreak);
+    QString endPart = icsValue.mid(thirdBreak);
 
     QString completeTodo = leftPart + juicyPart + endPart;
     QString restTodo = leftPart + leftoverPart + endPart;
 
-    parseIcs(completeTodo);
+    icsList << completeTodo;
 
     // juicy Part is not in restTodo if there is more than one TODO, so start recursive loop
     if(!restTodo.contains(juicyPart)){
-        parseIcs(restTodo);
+        icsList << split_ics(restTodo);
     }
-}
-
-
-void MainWindow::addEntrytoList(QString entryName, bool completed)
-{
-    QListWidgetItem *tempItem = new QListWidgetItem(entryName, ui->listWidget);
-    tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
-    tempItem->setCheckState((completed)?Qt::Checked:Qt::Unchecked);
-    ui->listWidget->addItem(tempItem);
+    return icsList;
 }
 
 //#############################
