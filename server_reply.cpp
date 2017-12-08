@@ -32,7 +32,8 @@ void MainWindow::requestFinished(QNetworkReply *reply)
             todoList.push_back(tempEntry);
 
             // adding the entry to the listwidget
-            add_todo_entry(tempEntry->get_key_value("SUMMARY"), ((tempEntry->get_key_value("STATUS") == "COMPLETED")?true:false));
+            add_todo_entry(*tempEntry);
+//            add_todo_entry(tempEntry->get_key_value("SUMMARY"), ((tempEntry->get_key_value("STATUS") == "COMPLETED")?true:false));
         }
     }
 }

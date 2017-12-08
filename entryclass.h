@@ -16,6 +16,7 @@ public:
     int add_key_value(QString newKey, QString newValue);
     void set_href(QString hrefValue);
     void set_ics(QString icsValue);
+    bool completed();
 private:
     QString etag;
     QString href;

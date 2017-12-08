@@ -94,3 +94,13 @@ int EntryClass::add_key_value(QString newKey, QString newValue)
         return 1;
     }
 }
+
+bool EntryClass::completed()
+{
+    if(this->get_key_value("PERCENT-COMPLETE") == "100") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
