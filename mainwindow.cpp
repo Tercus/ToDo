@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "entryclass.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
@@ -34,23 +33,6 @@ void MainWindow::add_todo_entry(QString entryName, bool completed)
     tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
     tempItem->setCheckState((completed)?Qt::Checked:Qt::Unchecked);
     ui->listWidget->addItem(tempItem);
-
-    QFrame *frame = new QFrame;
-    QLabel *label1 = new QLabel("Summary:");
-    QLineEdit *linedit = new QLineEdit(entryName);
-    QLabel *label2 = new QLabel("Description:");
-    QTextEdit *textedit = new QTextEdit();
-    QPushButton *button = new QPushButton("Save changes");
-
-    QVBoxLayout *box = new QVBoxLayout();
-    box->addWidget(label1);
-    box->addWidget(linedit);
-    box->addWidget(label2);
-    box->addWidget(textedit);
-    box->addWidget(button);
-    frame->setLayout(box);
-
-    ui->toolBox->addItem(frame, entryName);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -94,20 +76,10 @@ void MainWindow::on_pushButton_SaveChanges_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    QFrame *frame1 = new QFrame;
-    QLabel *label1 = new QLabel("Summary:");
-    QLineEdit *linedit = new QLineEdit();
-    QLabel *label2 = new QLabel("Description:");
-    QTextEdit *textedit = new QTextEdit();
-    QPushButton *button = new QPushButton("Save changes");
 
-    QVBoxLayout *box = new QVBoxLayout();
-    box->addWidget(label1);
-    box->addWidget(linedit);
-    box->addWidget(label2);
-    box->addWidget(textedit);
-    box->addWidget(button);
-    frame1->setLayout(box);
+}
 
-    ui->toolBox->addItem(frame1, "Shabam");
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    qDebug() << "Checkbox has been touched.";
 }

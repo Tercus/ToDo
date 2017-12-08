@@ -29,6 +29,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_checkBox_stateChanged(int arg1);
+
 public slots:
     void requestFinished(QNetworkReply *reply);
 

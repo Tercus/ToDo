@@ -39,7 +39,7 @@
          <string>Task Info</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="3" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QTextEdit" name="textEdit_description">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -55,27 +55,34 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="label_summary">
            <property name="text">
             <string>Summary:</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="label_description">
            <property name="text">
             <string>Description:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
+         <item row="3" column="0" colspan="2">
           <widget class="QLineEdit" name="lineEdit_summary"/>
          </item>
-         <item row="4" column="0" colspan="2">
+         <item row="6" column="0" colspan="2">
           <widget class="QPushButton" name="pushButton_SaveChanges">
            <property name="text">
             <string>Save Changes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkBox">
+           <property name="text">
+            <string>Task completed</string>
            </property>
           </widget>
          </item>
@@ -93,49 +100,51 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="SettingsPage">
        <attribute name="title">
         <string>Settings</string>
        </attribute>
-       <widget class="QWidget" name="">
-        <layout class="QFormLayout" name="formLayout">
-         <item row="0" column="0" colspan="2">
-          <widget class="QLineEdit" name="lineEdit_server">
-           <property name="text">
-            <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/</string>
-           </property>
-           <property name="placeholderText">
-            <string>Server</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="lineEdit_username">
-           <property name="text">
-            <string>Tobias</string>
-           </property>
-           <property name="placeholderText">
-            <string>Username</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_password">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
-           <property name="placeholderText">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_server">
+            <property name="text">
+             <string>https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/</string>
+            </property>
+            <property name="placeholderText">
+             <string>Server</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="lineEdit_username">
+            <property name="text">
+             <string>Tobias</string>
+            </property>
+            <property name="placeholderText">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit_password">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+            <property name="placeholderText">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="DebugPage">
        <attribute name="title">
@@ -177,23 +186,6 @@
          </widget>
         </item>
        </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolBox" name="toolBox">
-      <widget class="QWidget" name="page_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>213</width>
-         <height>530</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 2</string>
-       </attribute>
       </widget>
      </widget>
     </item>
