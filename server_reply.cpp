@@ -15,8 +15,6 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 
     if(urlPath.endsWith(".ics")) {
         // Most likely a reply from editing a task
-        qDebug() << "Oh my god, we changed something!";
-        qDebug() << reply->rawHeader("ETag");
         todoList[ui->listWidget->currentRow()]->set_etag(reply->rawHeader("ETag"));
         refresh_View();
     }
@@ -37,7 +35,6 @@ void MainWindow::requestFinished(QNetworkReply *reply)
 
             // adding the entry to the listwidget
             add_todo_entry(*tempEntry);
-//            add_todo_entry(tempEntry->get_key_value("SUMMARY"), ((tempEntry->get_key_value("STATUS") == "COMPLETED")?true:false));
         }
     }
 }
