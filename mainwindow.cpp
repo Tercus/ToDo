@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
-
-    debugMode = true;
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +29,7 @@ void MainWindow::add_todo_entry(EntryClass entry)
 {
     QListWidgetItem *tempItem = new QListWidgetItem(entry.get_key_value("SUMMARY"), ui->listWidget);
     tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
-    tempItem->setCheckState((entry.completed())?Qt::Checked:Qt::Unchecked);
+    tempItem->setCheckState((entry.is_completed())?Qt::Checked:Qt::Unchecked);
     ui->listWidget->addItem(tempItem);
 }
 
@@ -48,57 +46,24 @@ void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem* listItem)
 {
     EntryClass *entry = todoList[ui->listWidget->row(listItem)];
-
-    QCheckBox *checkbox = new QCheckBox("Finished");
-    checkbox->setChecked(entry->completed());
-    QLabel *label1 = new QLabel("Summary:");
-    QLineEdit *linedit = new QLineEdit(entry->get_key_value("SUMMARY"));
-    QLabel *label2 = new QLabel("Description:");
-    QTextEdit *textedit = new QTextEdit(entry->get_key_value("DESCRIPTION"));
-    QPushButton *button = new QPushButton("Save changes");
-    connect(button, SIGNAL(clicked()), this, SLOT(on_pushButton_SaveChanges_clicked()));
-
-    QVBoxLayout *box = new QVBoxLayout();
-    box->addWidget(checkbox);
-    box->addWidget(label1);
-    box->addWidget(linedit);
-    box->addWidget(label2);
-    box->addWidget(textedit);
-    box->addWidget(button);
-    qDeleteAll(ui->Task_View->children());
-    ui->Task_View->setLayout(box);
-}
-
-void MainWindow::debugMessage(QString message)
-{
-    if(debugMode) {
-        ui->debugField->appendPlainText(message + "\n");
-    }
-}
-
-void MainWindow::on_pushButton_test_clicked()
-{
-//    sendUpdates(QString URL, QString UID, QString ics);
-    todoList.at(ui->listWidget->currentRow())->add_key_value("STATUS", "COMPLETED");
-    QString url = "https://nextcloud.timesinks.de" + todoList.at(ui->listWidget->currentRow())->get_href();
-    QString etag = todoList.at(ui->listWidget->currentRow())->get_etag();
-    QString ics = todoList.at(ui->listWidget->currentRow())->get_ics();
-    sendUpdates(url, etag, ics);
+    ui->checkBox->setChecked(entry->is_completed());
+    ui->lineEdit_summary->setText(entry->get_key_value("SUMMARY"));
+    ui->textEdit_description->setPlainText(entry->get_key_value("DESCRIPTION"));
 }
 
 void MainWindow::on_pushButton_SaveChanges_clicked()
 {
-    qDebug() << "Button worked";
-//    todoList[ui->listWidget->currentRow()]->edit_key_value("DESCRIPTION",ui->textEdit_description->toPlainText());
-//    todoList[ui->listWidget->currentRow()]->edit_key_value("SUMMARY",ui->lineEdit_summary->text());
+    EntryClass *entry = todoList[ui->listWidget->currentRow()];
+    entry->edit_key_value("DESCRIPTION",ui->textEdit_description->toPlainText());
+    entry->edit_key_value("SUMMARY",ui->lineEdit_summary->text());
+    entry->set_completion(ui->checkBox->isChecked());
+    sendUpdates("https://nextcloud.timesinks.de" + entry->get_href(), entry->get_etag(), entry->get_ics());
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::refresh_View()
 {
-
-}
-
-void MainWindow::on_checkBox_stateChanged(int arg1)
-{
-    qDebug() << "Checkbox has been touched.";
+    ui->listWidget->clear();
+    foreach (EntryClass *entry, todoList) {
+        add_todo_entry(*entry);
+    }
 }

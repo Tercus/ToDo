@@ -9,12 +9,16 @@ void MainWindow::requestFinished(QNetworkReply *reply)
     QString replyText = reply->readAll();
 
     if (reply->error() != QNetworkReply::NoError) {
-        debugMessage("Darnit, something went wrong: \n Error " + QString::number(reply->error()) + " from url " + url.toString() + ": " + reply->errorString());
+        qDebug() << "Darnit, something went wrong: Error" << QString::number(reply->error()) << "from url" << url.toString();
+        qDebug() << reply->errorString();
     }
 
     if(urlPath.endsWith(".ics")) {
         // Most likely a reply from editing a task
         qDebug() << "Oh my god, we changed something!";
+        qDebug() << reply->rawHeader("ETag");
+        todoList[ui->listWidget->currentRow()]->set_etag(reply->rawHeader("ETag"));
+        refresh_View();
     }
     else if(replyText.contains("BEGIN:VTODO")) {
         QDomDocument doc("mydocument");

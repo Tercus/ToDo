@@ -95,12 +95,24 @@ int EntryClass::add_key_value(QString newKey, QString newValue)
     }
 }
 
-bool EntryClass::completed()
+bool EntryClass::is_completed()
 {
     if(this->get_key_value("PERCENT-COMPLETE") == "100") {
         return true;
     }
     else {
         return false;
+    }
+}
+
+void EntryClass::set_completion(bool state)
+{
+    if(state) {
+        this->edit_key_value("STATUS", "COMPLETED");
+        this->edit_key_value("PERCENT-COMPLETE", "100");
+    }
+    else {
+        this->edit_key_value("STATUS", "NEEDS-ACTION");
+        this->edit_key_value("PERCENT-COMPLETE", "0");
     }
 }
