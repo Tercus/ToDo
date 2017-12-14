@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "entryclass.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
@@ -19,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
-
-    debugMode = true;
 }
 
 MainWindow::~MainWindow()
@@ -28,35 +25,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::add_todo_entry(EntryClass entry)
+{
+    QListWidgetItem *tempItem = new QListWidgetItem(entry.get_key_value("SUMMARY"), ui->listWidget);
+    tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
+    tempItem->setCheckState((entry.is_completed())?Qt::Checked:Qt::Unchecked);
+    ui->listWidget->addItem(tempItem);
+}
+
 void MainWindow::on_actionExit_triggered()
 {
     close();
-}
-
-void MainWindow::on_actionImport_ToDo_s_triggered()
-{
-    QString file_name = QFileDialog::getOpenFileName(this, "Open a file", "", "*.ics");
-    importFile(file_name);
-}
-
-void MainWindow::on_actionDemo_Data_triggered()
-{
-    debugMessage("Using demo ics file.");
-    importFile(":/exampleData/data/tasks.ics");
-}
-
-void MainWindow::importFile(QString path)
-{
-    QFile file(path);
-    if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::information(this, "Title", "File not opened");
-    }
-    else {
-        QTextStream in(&file);
-        QString text = in.readAll();
-        parseIcs(text);
-        file.close();
-    }
 }
 
 void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
@@ -64,36 +43,32 @@ void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
     buildRequest("get_todo_list");
 }
 
-void MainWindow::on_actionGet_Calendars_from_Server_triggered()
+void MainWindow::onListWidgetlItemClicked(QListWidgetItem* listItem)
 {
-    buildRequest("get_calendar_list");
-}
-
-void MainWindow::onListWidgetlItemClicked(QListWidgetItem*)
-{
-    ui->lineEdit_summary->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("SUMMARY"));
-    ui->textEdit_description->setText(todoList[ui->listWidget->currentRow()]->returnKeyValue("DESCRIPTION").replace("\\n", "\n"));
-}
-
-void MainWindow::debugMessage(QString message)
-{
-    if(debugMode) {
-        ui->debugField->appendPlainText(message + "\n");
-    }
-}
-
-void MainWindow::on_pushButton_test_clicked()
-{
-//    sendUpdates(QString URL, QString UID, QString ics);
-    todoList.at(ui->listWidget->currentRow())->addKeyValue("STATUS", "COMPLETED");
-    QString url = "https://nextcloud.timesinks.de" + todoList.at(ui->listWidget->currentRow())->returnHref();
-    QString etag = todoList.at(ui->listWidget->currentRow())->returnEtag();
-    QString ics = todoList.at(ui->listWidget->currentRow())->returnIcs();
-    sendUpdates(url, etag, ics);
+    EntryClass *entry = todoList[ui->listWidget->row(listItem)];
+    ui->checkBox->setChecked(entry->is_completed());
+    ui->lineEdit_summary->setText(entry->get_key_value("SUMMARY"));
+    ui->textEdit_description->setPlainText(entry->get_key_value("DESCRIPTION"));
 }
 
 void MainWindow::on_pushButton_SaveChanges_clicked()
 {
-    todoList[ui->listWidget->currentRow()]->editKeyValue("DESCRIPTION",ui->textEdit_description->toPlainText());
-    todoList[ui->listWidget->currentRow()]->editKeyValue("SUMMARY",ui->lineEdit_summary->text());
+    EntryClass *entry = todoList[ui->listWidget->currentRow()];
+    entry->edit_key_value("DESCRIPTION",ui->textEdit_description->toPlainText());
+    entry->edit_key_value("SUMMARY",ui->lineEdit_summary->text());
+    entry->set_completion(ui->checkBox->isChecked());
+    sendUpdates("https://nextcloud.timesinks.de" + entry->get_href(), entry->get_etag(), entry->get_ics());
+}
+
+void MainWindow::refresh_View()
+{
+    ui->listWidget->clear();
+    foreach (EntryClass *entry, todoList) {
+        add_todo_entry(*entry);
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    on_actionGet_ToDo_s_from_Server_triggered();
 }

@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ics_handling.cpp \
     server_request.cpp \
     server_reply.cpp \
     entryclass.cpp

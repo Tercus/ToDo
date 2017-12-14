@@ -105,7 +105,7 @@ QString MainWindow::requestBody(QString requestType)
     }
     else {
         bodyContent = "";
-        debugMessage("requested bodyType not found");
+        qDebug() << "requested bodyType not found";
     }
     return bodyContent;
 }

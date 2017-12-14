@@ -1,23 +1,20 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 #include "entryclass.h"
 
-EntryClass::EntryClass(QString etagValue, QString hrefValue, QString icsValue)
+EntryClass::EntryClass()
 {
     qDebug() << "EntryClass created";
-    etag = etagValue;
-    href = hrefValue;
-    this->fillIcsData(icsValue);
 }
 
-void EntryClass::fillIcsData(QString icsData)
+void EntryClass::extract_ics(QString icsValue)
 {
     // RFC 5545: 3.1. -> requires long lines to be folded. Unfold them here
-    icsData.replace("\n ", "");
+    icsValue.replace("\n ", "");
 
     // Each line *must* be a new key-value pair.
     // Splitting at \n ignores \\n inside of multiline-text
-    QStringList icsFields = icsData.split("\n");
+    QStringList icsFields = icsValue.split("\n");
     foreach (QString entry, icsFields) {
         QStringList keyAndValue = entry.split(":");
         this->keys.append(keyAndValue[0]);
@@ -26,22 +23,32 @@ void EntryClass::fillIcsData(QString icsData)
     }
 }
 
-void EntryClass::setEtag(QString etagValue)
+void EntryClass::set_ics(QString icsValue)
+{
+    extract_ics(icsValue);
+}
+
+void EntryClass::set_etag(QString etagValue)
 {
     this->etag = etagValue;
 }
 
-QString EntryClass::returnEtag()
+void EntryClass::set_href(QString hrefValue)
+{
+    this->href = hrefValue;
+}
+
+QString EntryClass::get_etag()
 {
     return etag;
 }
 
-QString EntryClass::returnHref()
+QString EntryClass::get_href()
 {
     return href;
 }
 
-QString EntryClass::returnIcs()
+QString EntryClass::get_ics()
 {
     QStringList keysAndValues;
     for(int x = 0; x < this->keys.size(); x++) {
@@ -50,21 +57,18 @@ QString EntryClass::returnIcs()
     return(keysAndValues.join("\n"));
 }
 
-QString EntryClass::returnKeyValue(QString key)
+QString EntryClass::get_key_value(QString key)
 {
     if(this->keys.contains(key)) {
         return this->values.value(this->keys.indexOf(key));
     }
     else {
-        qDebug() << "Error: Key"
-                 << key
-                 << "doesn't exist for entry"
-                 << this->returnKeyValue("SUMMARY");
+        qDebug() << "Error: Key" << key << "could not be found";
         return("");
     }
 }
 
-int EntryClass::editKeyValue(QString key, QString newValue)
+int EntryClass::edit_key_value(QString key, QString newValue)
 {
     if(this->keys.contains(key)) {
         this->values[this->keys.indexOf(key)] = newValue;
@@ -72,21 +76,43 @@ int EntryClass::editKeyValue(QString key, QString newValue)
         return 1;
     }
     else {
-        qDebug() << "Error: Key doesn't exist";
-        return -1;
+        qDebug() << "Error:" << key << "didn't exist, so creating it.";
+        this->add_key_value(key, newValue);
+        return 1;
     }
 }
 
-int EntryClass::addKeyValue(QString newKey, QString newValue)
+int EntryClass::add_key_value(QString newKey, QString newValue)
 {
     if(this->keys.contains(newKey)) {
-        this->values[this->keys.indexOf(newKey)] = newValue;
-        this->flagEdited = 1;
+        this->edit_key_value(newKey, newValue);
         return 1;
     }
     else {
         this->keys.insert(this->keys.indexOf("SUMMARY"), newKey);
         this->values.insert(this->keys.indexOf(newKey), newValue);
         return 1;
+    }
+}
+
+bool EntryClass::is_completed()
+{
+    if(this->get_key_value("PERCENT-COMPLETE") == "100") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void EntryClass::set_completion(bool state)
+{
+    if(state) {
+        this->edit_key_value("STATUS", "COMPLETED");
+        this->edit_key_value("PERCENT-COMPLETE", "100");
+    }
+    else {
+        this->edit_key_value("STATUS", "NEEDS-ACTION");
+        this->edit_key_value("PERCENT-COMPLETE", "0");
     }
 }
