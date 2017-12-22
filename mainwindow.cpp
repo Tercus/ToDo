@@ -67,8 +67,3 @@ void MainWindow::refresh_View()
         add_todo_entry(*entry);
     }
 }
-
-void MainWindow::on_pushButton_clicked()
-{
-    on_actionGet_ToDo_s_from_Server_triggered();
-}
