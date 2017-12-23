@@ -1,23 +1,22 @@
 #ifndef TODOLISTCLASS_H
 #define TODOLISTCLASS_H
 
-#include "mainwindow.h"
+//#include "mainwindow.h"
+#include <QObject>
+#include <QDebug>
 
-class todoListClass
+class todoListClass : public QObject
 {
+    Q_OBJECT
 public:
-    todoListClass();
-private:
-    QVector<EntryClass> mainList;
-    QVector<QString> uidList;
-    QVector<QString> etagList;
+    explicit todoListClass(QObject *parent = 0);
+
 public slots:
-    void entry_createNew();
-    void entry_modify();
-    void entry_delete();
-    void list_getFromServer();
-    void list_refreshFromServer();
-    void list_clear();
+    void testmessage();
+    void testmessage(bool);
+
+private:
+    QString standardVar;
 };
 
 #endif // TODOLISTCLASS_H
