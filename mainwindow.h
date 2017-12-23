@@ -26,8 +26,6 @@ private slots:
     void on_actionGet_ToDo_s_from_Server_triggered();
     void on_pushButton_SaveChanges_clicked();
 
-    void on_pushButton_clicked();
-
 public slots:
     void requestFinished(QNetworkReply *reply);
 

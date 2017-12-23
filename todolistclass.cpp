@@ -2,12 +2,12 @@
 
 todoListClass::todoListClass(QObject *parent) : QObject(parent)
 {
-    standardVar = "Standard Value";
+
 }
 
 void todoListClass::testmessage()
 {
-    qDebug() << "Does this work?" << standardVar;
+    qDebug() << "Does this work?";
 }
 
 void todoListClass::testmessage(bool)

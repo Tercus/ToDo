@@ -1,7 +1,7 @@
 #ifndef ENTRYCLASS_H
 #define ENTRYCLASS_H
 
-#include "mainwindow.h"
+#include <QString>
 
 class EntryClass
 {

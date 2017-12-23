@@ -18,9 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
-
-//    QObject::connect(this, SIGNAL(testSignal(bool)), &a, SLOT(testmessage(bool)));
-//    emit testSignal(true);
+    QObject::connect(this->ui->pushButton, SIGNAL(clicked(bool)), &a, SLOT(testmessage(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -69,10 +67,4 @@ void MainWindow::refresh_View()
     foreach (EntryClass *entry, todoList) {
         add_todo_entry(*entry);
     }
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    QObject::connect(this, SIGNAL(testSignal(bool)), &a, SLOT(testmessage(bool)));
-    emit testSignal(true);
 }
