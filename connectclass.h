@@ -3,8 +3,11 @@
 
 #include <QObject>
 #include <QBuffer>
+#include <QDomElement>
+#include <QMap>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
 class ConnectClass : public QObject
 {
@@ -20,6 +23,7 @@ private:
     QString createAuth();
     QString requestBody(QString requestType);
     void buildRequest();
+    QMap<QString, QString> NodeRunner(QDomNode Node);
 public slots:
     void requestFinished(QNetworkReply *reply);
 };
