@@ -2,10 +2,18 @@
 
 ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
 {
-
+// Hier könnte eigentlich der ganze Kram mit Header und so rein.
+    qDebug() << "New ConnectClass has been created";
+    url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/";
 }
 
-void ConnectClass::buildRequest() {
+void ConnectClass::new_Request(QString requestType)
+{
+    qDebug() << "I'm supposed to make a new_Request";
+    buildRequest(requestType);
+}
+
+void ConnectClass::buildRequest(QString requestType) {
     QNetworkRequest request(url);
     QString body = requestBody(requestType);
     QByteArray *dataToSend = new QByteArray(body.toUtf8());
@@ -115,6 +123,7 @@ void ConnectClass::requestFinished(QNetworkReply *reply)
     QUrl url = reply->url();
     QString urlPath = url.path();
     QString replyText = reply->readAll();
+    qDebug() << url;
 
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "Darnit, something went wrong: Error" << QString::number(reply->error()) << "from url" << url.toString();

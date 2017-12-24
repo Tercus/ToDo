@@ -41,7 +41,7 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionGet_ToDo_s_from_Server_triggered()
 {
-    buildRequest("get_todo_list");
+//    buildRequest("get_todo_list");
 }
 
 void MainWindow::onListWidgetlItemClicked(QListWidgetItem* listItem)
@@ -58,7 +58,7 @@ void MainWindow::on_pushButton_SaveChanges_clicked()
     entry->edit_key_value("DESCRIPTION",ui->textEdit_description->toPlainText());
     entry->edit_key_value("SUMMARY",ui->lineEdit_summary->text());
     entry->set_completion(ui->checkBox->isChecked());
-    sendUpdates("https://nextcloud.timesinks.de" + entry->get_href(), entry->get_etag(), entry->get_ics());
+//    sendUpdates("https://nextcloud.timesinks.de" + entry->get_href(), entry->get_etag(), entry->get_ics());
 }
 
 void MainWindow::refresh_View()

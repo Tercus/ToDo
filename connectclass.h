@@ -22,10 +22,11 @@ private:
     QString password;
     QString createAuth();
     QString requestBody(QString requestType);
-    void buildRequest();
+    void buildRequest(QString requestType);
     QMap<QString, QString> NodeRunner(QDomNode Node);
     void sendUpdates(QString url, QString etag, QString ics);
 public slots:
+    void new_Request(QString requestType);
     void requestFinished(QNetworkReply *reply);
 };
 
