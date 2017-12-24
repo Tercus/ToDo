@@ -28,11 +28,13 @@ SOURCES += main.cpp\
     server_request.cpp \
     server_reply.cpp \
     entryclass.cpp \
-    todolistclass.cpp
+    todolistclass.cpp \
+    connectclass.cpp
 
 HEADERS  += mainwindow.h \
     entryclass.h \
-    todolistclass.h
+    todolistclass.h \
+    connectclass.h
 
 FORMS    += mainwindow.ui
 
