@@ -24,6 +24,7 @@ private:
     QString requestBody(QString requestType);
     void buildRequest();
     QMap<QString, QString> NodeRunner(QDomNode Node);
+    void sendUpdates(QString url, QString etag, QString ics);
 public slots:
     void requestFinished(QNetworkReply *reply);
 };

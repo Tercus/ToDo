@@ -36,6 +36,26 @@ void ConnectClass::buildRequest() {
     manager->sendCustomRequest(request, requestMethod.toLocal8Bit(), buffer);
 }
 
+void ConnectClass::sendUpdates(QString url, QString etag, QString ics)
+{
+    QNetworkRequest request(url);
+
+    QByteArray *dataToSend = new QByteArray(ics.toUtf8());
+    QBuffer *buffer = new QBuffer(dataToSend);
+
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
+
+    // set header data
+    request.setRawHeader("Authorization", createAuth().toLocal8Bit());
+    request.setRawHeader("If-Match", etag.toUtf8());
+    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
+
+    manager->sendCustomRequest(request, "PUT", buffer);
+}
+
 QString ConnectClass::createAuth()
 {
     QString concatenated = username + ":" + password;
