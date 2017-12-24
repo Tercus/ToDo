@@ -6,6 +6,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QDomElement>
 #include "entryclass.h"
+#include "todolistclass.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,14 +26,16 @@ private slots:
     void on_actionGet_ToDo_s_from_Server_triggered();
     void on_pushButton_SaveChanges_clicked();
 
-    void on_pushButton_clicked();
-
 public slots:
     void requestFinished(QNetworkReply *reply);
+
+signals:
+    void testSignal(bool);
 
 private:
     Ui::MainWindow *ui;
     QVector<EntryClass *> todoList;
+    todoListClass a;
 
     void icsToTable(QString fullText);
     QString requestBody(QString requestType);

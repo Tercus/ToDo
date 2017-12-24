@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
+    connect(this->ui->pushButton, SIGNAL(clicked(bool)), &a, SLOT(list_get()));
 }
 
 MainWindow::~MainWindow()
@@ -66,9 +67,4 @@ void MainWindow::refresh_View()
     foreach (EntryClass *entry, todoList) {
         add_todo_entry(*entry);
     }
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    on_actionGet_ToDo_s_from_Server_triggered();
 }
