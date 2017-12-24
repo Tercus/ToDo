@@ -25,8 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    server_request.cpp \
-    server_reply.cpp \
     entryclass.cpp \
     todolistclass.cpp \
     connectclass.cpp
