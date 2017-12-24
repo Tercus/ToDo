@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
-    QObject::connect(this->ui->pushButton, SIGNAL(clicked(bool)), &a, SLOT(testmessage(bool)));
+    connect(this->ui->pushButton, SIGNAL(clicked(bool)), &a, SLOT(list_get()));
 }
 
 MainWindow::~MainWindow()

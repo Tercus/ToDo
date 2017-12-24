@@ -5,12 +5,33 @@ todoListClass::todoListClass(QObject *parent) : QObject(parent)
 
 }
 
-void todoListClass::testmessage()
+void todoListClass::entry_new()
 {
-    qDebug() << "Does this work?";
+    qDebug() << "Call for new entry";
+//    ConnectClass new_connection;
 }
 
-void todoListClass::testmessage(bool)
+void todoListClass::entry_edit()
 {
-    qDebug() << "Was this everything?!";
+    qDebug() << "Call for entry edit";
+}
+
+void todoListClass::entry_delete()
+{
+    qDebug() << "Call for entry delete";
+}
+
+void todoListClass::list_get()
+{
+    qDebug() << "Call for initializing list";
+}
+
+void todoListClass::list_check()
+{
+    qDebug() << "Call for checking the list for updates";
+}
+
+void todoListClass::list_clear()
+{
+    qDebug() << "Call for clearing the list";
 }
