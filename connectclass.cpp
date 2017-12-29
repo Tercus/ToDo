@@ -153,7 +153,7 @@ void ConnectClass::requestFinished(QNetworkReply *reply)
 
             // adding the entry to the listwidget
 //            add_todo_entry(*tempEntry);
-            qDebug() << node.value("cal:calender-data");
+            qDebug() << node.value("cal:calendar-data");
         }
     }
 }
@@ -164,6 +164,7 @@ QMap<QString, QString> ConnectClass::NodeRunner(QDomNode Node)
     QString currentNodeName = Node.nodeName().toUtf8();
     if(currentNodeName == "d:href" || currentNodeName == "d:getetag" || currentNodeName == "cal:calendar-data") {
         values.insert(currentNodeName, Node.toElement().QDomElement::text());
+//        qDebug() << Node.toElement().QDomElement::text();
     }
     for (int x = 0; x < Node.childNodes().count(); x++) {
         values.unite(NodeRunner(Node.childNodes().at(x)));
@@ -182,5 +183,5 @@ QMap<QString, QString> ConnectClass::NodeRunner(QDomNode Node)
 //          |-> d:prop
 //               |-> d:getetag
 //               |-> d:getlastmodified
-//               |-> c:calender-data
+//               |-> cal:calendar-data
 //          |-> d:status
