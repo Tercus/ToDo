@@ -4,7 +4,7 @@ ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
 {
 // Hier könnte eigentlich der ganze Kram mit Header und so rein.
     qDebug() << "New ConnectClass has been created";
-    url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Tobias/todo_testing/";
+    url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/";
 }
 
 void ConnectClass::new_Request(QString requestType)

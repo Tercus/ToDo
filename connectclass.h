@@ -18,8 +18,8 @@ public:
 private:
     QString url;
     QString requestType;
-    QString username = "Tobias";
-    QString password = "Talib-chan12";
+    QString username = "Test";
+    QString password = "Testotest";
     QString createAuth();
     QString requestBody(QString requestType);
     void buildRequest(QString requestType);
