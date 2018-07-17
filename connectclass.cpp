@@ -2,7 +2,9 @@
 
 ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
 {
-// Hier könnte eigentlich der ganze Kram mit Header und so rein.
+//    Hier könnte eigentlich der ganze Kram mit Header und so rein.
+//    This is the main object of every Connection. Every connection consists of three steps:
+//        prepare request -> send request -> handle reply
     qDebug() << "New ConnectClass has been created";
     url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/";
 }
@@ -66,6 +68,8 @@ void ConnectClass::sendUpdates(QString url, QString etag, QString ics)
 
 QString ConnectClass::createAuth()
 {
+//    TODO:
+//    - make username and password part of settings and read them out here
     QString concatenated = username + ":" + password;
     QByteArray authData = concatenated.toLocal8Bit().toBase64();
     QString headerAuthData = "Basic " + authData;
