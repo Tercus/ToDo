@@ -11,11 +11,8 @@ ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
 
 void ConnectClass::new_Request(QString requestType)
 {
-    qDebug() << "I'm supposed to make a new_Request";
-    buildRequest(requestType);
-}
-
-void ConnectClass::buildRequest(QString requestType) {
+//    Debug Output
+    qDebug() << "Making a new request. requestType is: " << requestType;
     QNetworkRequest request(url);
     QString body = requestBody(requestType);
     QByteArray *dataToSend = new QByteArray(body.toUtf8());

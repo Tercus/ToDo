@@ -85,6 +85,7 @@ int EntryClass::edit_key_value(QString key, QString newValue)
 int EntryClass::add_key_value(QString newKey, QString newValue)
 {
     if(this->keys.contains(newKey)) {
+        qDebug() << "Error:" << newKey << "already exists. Overwriting value.";
         this->edit_key_value(newKey, newValue);
         return 1;
     }

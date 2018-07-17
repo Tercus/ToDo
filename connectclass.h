@@ -22,7 +22,6 @@ private:
     QString password = "Testotest";
     QString createAuth();
     QString requestBody(QString requestType);
-    void buildRequest(QString requestType);
     QMap<QString, QString> NodeRunner(QDomNode Node);
     void sendUpdates(QString url, QString etag, QString ics);
 public slots:
