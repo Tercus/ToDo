@@ -26,6 +26,8 @@ private slots:
     void on_actionGet_ToDo_s_from_Server_triggered();
     void on_pushButton_SaveChanges_clicked();
 
+    void on_pushButton_2_clicked();
+
 signals:
     void testSignal(bool);
 

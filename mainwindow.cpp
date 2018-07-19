@@ -68,3 +68,32 @@ void MainWindow::refresh_View()
         add_todo_entry(*entry);
     }
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+//    create this DOM document:
+//    <d:propfind xmlns:d=\"DAV:\">
+//        <d:prop>
+//            <d:displayname/>
+//            <cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\"/>
+//        </d:prop>
+//    </d:propfind>
+    QDomDocument doc;
+
+    QDomElement propfind = doc.createElement("d:propfind");
+    QDomElement prop = doc.createElement("d:prop");
+    QDomElement displayname = doc.createElement("d:displayname");
+    QDomElement getctag = doc.createElement("cs:getctag");
+
+    propfind.setAttribute("xmlns:d", "DAV:");
+    getctag.setAttribute("xmlns:cs", "http://calendarserver.org/ns/");
+
+
+    doc.appendChild(propfind);
+    propfind.appendChild(prop);
+    prop.appendChild(displayname);
+    prop.appendChild(getctag);
+
+    qDebug() << "Test Button clicked!";
+    qDebug() << doc.toByteArray(4);
+}
