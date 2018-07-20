@@ -27,12 +27,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     entryclass.cpp \
     todolistclass.cpp \
-    connectclass.cpp
+    connectclass.cpp \
+    request.cpp
 
 HEADERS  += mainwindow.h \
     entryclass.h \
     todolistclass.h \
-    connectclass.h
+    connectclass.h \
+    request.h
 
 FORMS    += mainwindow.ui
 

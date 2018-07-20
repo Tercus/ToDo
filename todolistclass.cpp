@@ -24,7 +24,7 @@ void todoListClass::list_get()
 {
     qDebug() << "Call for initializing list";
     ConnectClass *newConnect = new ConnectClass;
-    newConnect->new_Request("get_todo_list");
+//    newConnect->new_Request("get_todo_list");
 }
 
 void todoListClass::list_check()

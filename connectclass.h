@@ -2,12 +2,8 @@
 #define CONNECTCLASS_H
 
 #include <QObject>
-#include <QBuffer>
+#include <QDebug>
 #include <QDomElement>
-#include <QMap>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
 
 class ConnectClass : public QObject
 {
@@ -15,18 +11,23 @@ class ConnectClass : public QObject
 
 public:
     explicit ConnectClass(QObject *parent = 0);
-private:
-    QString url;
-    QString requestType;
-    QString username = "Test";
-    QString password = "Testotest";
-    QString createAuth();
-    QString requestBody(QString requestType);
-    QMap<QString, QString> NodeRunner(QDomNode Node);
-    void sendUpdates(QString url, QString etag, QString ics);
-public slots:
-    void new_Request(QString requestType);
-    void requestFinished(QNetworkReply *reply);
+    bool get_lists();
+    bool get_list(QString list_name);
+    bool get_updates();
+    bool send_edits(QString edited_entries);
+protected:
+    QDomDocument doc;
+    QDomElement propfind = doc.createElement("d:propfind");
+    QDomElement prop = doc.createElement("d:prop");
+    QDomElement displayname = doc.createElement("d:displayname");
+    QDomElement getctag = doc.createElement("cs:getctag");
+    QDomElement calendar_query = doc.createElement("c:calendar-query");
+    QDomElement getetag = doc.createElement("d:getetag");
+    QDomElement getlastmodified = doc.createElement("d:getlastmodified");
+    QDomElement calendar_data = doc.createElement("c:calendar-data");
+    QDomElement filter = doc.createElement("c:filter");
+    QDomElement comp_filter = doc.createElement("c:comp-filter");
+    QDomElement comp_filter2 = doc.createElement("c:comp-filter");
 };
 
 #endif // CONNECTCLASS_H

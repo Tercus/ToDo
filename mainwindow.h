@@ -7,6 +7,7 @@
 #include <QDomElement>
 #include "entryclass.h"
 #include "todolistclass.h"
+#include "request.h"
 
 namespace Ui {
 class MainWindow;

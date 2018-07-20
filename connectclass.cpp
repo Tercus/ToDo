@@ -2,187 +2,91 @@
 
 ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
 {
-//    Hier könnte eigentlich der ganze Kram mit Header und so rein.
-//    This is the main object of every Connection. Every connection consists of three steps:
-//        prepare request -> send request -> handle reply
-    qDebug() << "New ConnectClass has been created";
-    url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/";
+    qDebug() << "A new ConnectionClass object has been created";
+
+
+//    propfind.setAttribute("xmlns:d", "DAV:");
+//    getctag.setAttribute("xmlns:cs", "http://calendarserver.org/ns/");
+//    calendar_query.setAttribute("xmlns:d", "DAV:");
+//    calendar_query.setAttribute("xmlns:c", "urn:ietf:params:xml:ns:caldav");
+//        comp_filter.setAttribute("name", "VCALENDAR");
+//        comp_filter.setAttribute("name", "VTODO");
 }
 
-void ConnectClass::new_Request(QString requestType)
+bool ConnectClass::get_lists()
 {
-//    Debug Output
-    qDebug() << "Making a new request. requestType is: " << requestType;
-    QNetworkRequest request(url);
-    QString body = requestBody(requestType);
-    QByteArray *dataToSend = new QByteArray(body.toUtf8());
-    QBuffer *buffer = new QBuffer(dataToSend);
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
-    QString requestMethod;
+    //    create this DOM document:
+    //    <d:propfind xmlns:d=\"DAV:\">
+    //        <d:prop>
+    //            <d:displayname/>
+    //            <cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\"/>
+    //        </d:prop>
+    //    </d:propfind>
 
+    doc.appendChild(propfind);
+    propfind.appendChild(prop);
+    prop.appendChild(displayname);
+    prop.appendChild(getctag);
+    getctag.setAttribute("xmlns:cs", "http://calendarserver.org/ns/");
 
-    // set header data
-    request.setRawHeader("Authorization", createAuth().toLocal8Bit());
-    request.setRawHeader("Depth", "1");
-    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
-    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
+    qDebug() << doc.toByteArray(4);
 
-
-    if(requestType == "get_calendar_list") {
-        requestMethod = "PROPFIND";
-    }
-    else if(requestType == "get_todo_list") {
-        requestMethod = "REPORT";
-    }
-    else if(requestType == "check_updates") {
-        requestMethod = "REPORT";
-    }
-
-    manager->sendCustomRequest(request, requestMethod.toLocal8Bit(), buffer);
+    return false;
 }
 
-void ConnectClass::sendUpdates(QString url, QString etag, QString ics)
+bool ConnectClass::get_list(QString list_name)
 {
-    QNetworkRequest request(url);
+//    create this DOM document:
+//    <c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\">
+//        <d:prop>
+//            <d:getetag />
+//            <d:getlastmodified />
+//            <c:calendar-data />
+//        </d:prop>
+//        <c:filter>
+//            <c:comp-filter name=\"VCALENDAR\">
+//                <c:comp-filter name=\"VTODO\" />
+//            </c:comp-filter>
+//        </c:filter>
+//    </c:calendar-query>
+    doc.appendChild(calendar_query);
+        calendar_query.setAttribute("xmlns:d", "DAV:");
+        calendar_query.setAttribute("xmlns:c", "urn:ietf:params:xml:ns:caldav");
+    calendar_query.appendChild(prop);
+    prop.appendChild(getetag);
+    prop.appendChild(getlastmodified);
+    prop.appendChild(calendar_data);
+    calendar_query.appendChild(filter);
+    filter.appendChild(comp_filter);
+        comp_filter.setAttribute("name", "VCALENDAR");
+    comp_filter.appendChild(comp_filter2);
+        comp_filter2.setAttribute("name", "VTODO");
 
-    QByteArray *dataToSend = new QByteArray(ics.toUtf8());
-    QBuffer *buffer = new QBuffer(dataToSend);
 
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
-
-    // set header data
-    request.setRawHeader("Authorization", createAuth().toLocal8Bit());
-    request.setRawHeader("If-Match", etag.toUtf8());
-    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
-    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
-
-    manager->sendCustomRequest(request, "PUT", buffer);
+    qDebug() << list_name;
+    return false;
 }
 
-QString ConnectClass::createAuth()
+bool ConnectClass::get_updates()
 {
-//    TODO:
-//    - make username and password part of settings and read them out here
-    QString concatenated = username + ":" + password;
-    QByteArray authData = concatenated.toLocal8Bit().toBase64();
-    QString headerAuthData = "Basic " + authData;
-    return headerAuthData;
+//    create this DOM document:
+//    <c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\">
+//        <d:prop>
+//            <d:getetag />
+//        </d:prop>
+//        <c:filter>
+//            <c:comp-filter name=\"VCALENDAR\">
+//                <c:comp-filter name=\"VTODO\" />
+//            </c:comp-filter>
+//        </c:filter>
+//    </c:calendar-query>
+
+
+    return false;
 }
 
-QString ConnectClass::requestBody(QString requestType)
+bool ConnectClass::send_edits(QString edited_entries)
 {
-    QString bodyContent;
-
-    if(requestType == "get_calendar_list") {
-        //body to get a list of all the available calendars
-        bodyContent = "<d:propfind xmlns:d=\"DAV:\"> \
-                            <d:prop> \
-                                <d:displayname /> \
-                                <cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\" /> \
-                            </d:prop> \
-                       </d:propfind>";
-    }
-    else if(requestType == "get_todo_list") {
-        bodyContent = "<c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\"> \
-                            <d:prop> \
-                                <d:getetag /> \
-                                <d:getlastmodified /> \
-                                <c:calendar-data /> \
-                            </d:prop> \
-                            <c:filter> \
-                                <c:comp-filter name=\"VCALENDAR\"> \
-                                    <c:comp-filter name=\"VTODO\" /> \
-                                </c:comp-filter> \
-                            </c:filter> \
-                       </c:calendar-query>";
-    }
-    else if(requestType == "check_updates") {
-        bodyContent = "<c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\"> \
-                            <d:prop> \
-                                <d:getetag /> \
-                            </d:prop> \
-                            <c:filter> \
-                                <c:comp-filter name=\"VCALENDAR\"> \
-                                    <c:comp-filter name=\"VTODO\" /> \
-                                </c:comp-filter> \
-                            </c:filter> \
-                       </c:calendar-query>";
-    }
-    else {
-        bodyContent = "";
-        qDebug() << "requested bodyType not found";
-    }
-    return bodyContent;
+    qDebug() << edited_entries;
+    return false;
 }
-
-void ConnectClass::requestFinished(QNetworkReply *reply)
-{
-    QUrl url = reply->url();
-    QString urlPath = url.path();
-    QString replyText = reply->readAll();
-    qDebug() << url;
-
-    if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "Darnit, something went wrong: Error" << QString::number(reply->error()) << "from url" << url.toString();
-        qDebug() << reply->errorString();
-    }
-
-    if(urlPath.endsWith(".ics")) {
-        // Most likely a reply from editing a task
-        qDebug() << "This is likely a reply from editing a task. I'll have to refresh the task list";
-//        todoList[ui->listWidget->currentRow()]->set_etag(reply->rawHeader("ETag"));
-//        refresh_View();
-    }
-    else if(replyText.contains("BEGIN:VTODO")) {
-        QDomDocument doc("mydocument");
-        doc.setContent(replyText);
-        QDomNodeList responseNodes = doc.elementsByTagName("d:response");
-
-        for(int x = 0; x < responseNodes.count(); x++) {
-            QMap<QString, QString> node = NodeRunner(responseNodes.at(x));
-
-            // Creating a new Entry object and adding it to the todoList
-//            EntryClass *tempEntry = new EntryClass;
-//            tempEntry->set_etag(node.value("d:getetag"));
-//            tempEntry->set_href(node.value("d:href"));
-//            tempEntry->set_ics(node.value("cal:calendar-data"));
-//            todoList.push_back(tempEntry);
-
-            // adding the entry to the listwidget
-//            add_todo_entry(*tempEntry);
-            qDebug() << node.value("cal:calendar-data");
-        }
-    }
-}
-
-QMap<QString, QString> ConnectClass::NodeRunner(QDomNode Node)
-{
-    QMap<QString, QString> values;
-    QString currentNodeName = Node.nodeName().toUtf8();
-    if(currentNodeName == "d:href" || currentNodeName == "d:getetag" || currentNodeName == "cal:calendar-data") {
-        values.insert(currentNodeName, Node.toElement().QDomElement::text());
-//        qDebug() << Node.toElement().QDomElement::text();
-    }
-    for (int x = 0; x < Node.childNodes().count(); x++) {
-        values.unite(NodeRunner(Node.childNodes().at(x)));
-    }
-    return(values);
-}
-
-
-
-//############################
-// Example response node
-//############################
-//    d:response
-//     |-> d:href
-//     |-> d:propstat
-//          |-> d:prop
-//               |-> d:getetag
-//               |-> d:getlastmodified
-//               |-> cal:calendar-data
-//          |-> d:status
