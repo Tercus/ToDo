@@ -22,9 +22,9 @@ void todoListClass::entry_delete()
 
 void todoListClass::list_get()
 {
-    qDebug() << "Call for initializing list";
+    qDebug() << "Button pressed to get full list from server";
     ConnectClass *newConnect = new ConnectClass;
-//    newConnect->new_Request("get_todo_list");
+    newConnect->get_lists();
 }
 
 void todoListClass::list_check()

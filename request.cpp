@@ -5,10 +5,8 @@ Request::Request(QObject *parent) : QObject(parent)
     qDebug() << "Making a new request.";
     QString url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/";
     QNetworkRequest request(url);
-//    QString body = make_body();
-    QString body;
-    QByteArray *dataToSend = new QByteArray(body.toUtf8());
-    QBuffer *buffer = new QBuffer(dataToSend);
+//    QByteArray *dataToSend = new QByteArray(body.toUtf8());
+    QBuffer *buffer = new QBuffer(&body);
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
     QString requestMethod;
@@ -23,7 +21,7 @@ Request::Request(QObject *parent) : QObject(parent)
     request.setRawHeader("Depth", "1");
     request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
-    request.setHeader(QNetworkRequest::ContentLengthHeader, dataToSend->size());
+    request.setHeader(QNetworkRequest::ContentLengthHeader, body.size());
 
 
 //    if(requestType == "get_calendar_list") {
@@ -39,50 +37,18 @@ Request::Request(QObject *parent) : QObject(parent)
     manager->sendCustomRequest(request, requestMethod.toLocal8Bit(), buffer);
 }
 
-QString Request::make_body(QString requestType)
+void Request::set_request_method(QString transmit_method)
 {
-    QString bodyContent;
+//    Set the request method. This will later include safetychecks.
 
-    if(requestType == "get_calendar_list") {
-        //body to get a list of all the available calendars
-        bodyContent = "<d:propfind xmlns:d=\"DAV:\"> \
-                            <d:prop> \
-                                <d:displayname /> \
-                                <cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\" /> \
-                            </d:prop> \
-                       </d:propfind>";
-    }
-    else if(requestType == "get_todo_list") {
-        bodyContent = "<c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\"> \
-                            <d:prop> \
-                                <d:getetag /> \
-                                <d:getlastmodified /> \
-                                <c:calendar-data /> \
-                            </d:prop> \
-                            <c:filter> \
-                                <c:comp-filter name=\"VCALENDAR\"> \
-                                    <c:comp-filter name=\"VTODO\" /> \
-                                </c:comp-filter> \
-                            </c:filter> \
-                       </c:calendar-query>";
-    }
-    else if(requestType == "check_updates") {
-        bodyContent = "<c:calendar-query xmlns:d=\"DAV:\" xmlns:c=\"urn:ietf:params:xml:ns:caldav\"> \
-                            <d:prop> \
-                                <d:getetag /> \
-                            </d:prop> \
-                            <c:filter> \
-                                <c:comp-filter name=\"VCALENDAR\"> \
-                                    <c:comp-filter name=\"VTODO\" /> \
-                                </c:comp-filter> \
-                            </c:filter> \
-                       </c:calendar-query>";
-    }
-    else {
-        bodyContent = "";
-        qDebug() << "requested bodyType not found";
-    }
-    return bodyContent;
+    request_method = transmit_method;
+}
+
+void Request::set_body(QByteArray transmit_body)
+{
+//    Set the body of the request. This will later include some checks to secure no breaking of data
+
+    body = transmit_body;
 }
 
 void Request::sendUpdates(QString url, QString etag, QString ics)

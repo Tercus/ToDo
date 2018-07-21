@@ -16,8 +16,11 @@ class Request : public QObject
 
 public:
     explicit Request(QObject *parent = 0);
+    void set_request_method(QString transmit_method);
+    void set_body(QByteArray transmit_body);
 private:
-    QString make_body(QString requestType);
+    QString request_method;
+    QByteArray body;
     QMap<QString, QString> NodeRunner(QDomNode Node);
     void sendUpdates(QString url, QString etag, QString ics);
 public slots:

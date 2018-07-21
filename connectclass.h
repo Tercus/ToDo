@@ -12,7 +12,7 @@ class ConnectClass : public QObject
 public:
     explicit ConnectClass(QObject *parent = 0);
     bool get_lists();
-    bool get_list(QString list_name);
+    bool get_list();
     bool get_updates();
     bool send_edits(QString edited_entries);
 protected:
