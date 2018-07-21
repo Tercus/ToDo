@@ -85,7 +85,9 @@ void Request::requestFinished(QNetworkReply *reply)
 //        refresh_View();
     }
     else if(replyText.contains("BEGIN:VTODO")) {
-        QDomDocument doc("mydocument");
+        qDebug() << "This is a reply from getting a whole list.";
+
+        QDomDocument doc;
         doc.setContent(replyText);
         QDomNodeList responseNodes = doc.elementsByTagName("d:response");
 
