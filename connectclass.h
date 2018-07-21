@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QDomElement>
+#include "request.h"
 
 class ConnectClass : public QObject
 {

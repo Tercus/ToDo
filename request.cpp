@@ -3,45 +3,36 @@
 Request::Request(QObject *parent) : QObject(parent)
 {
     qDebug() << "Making a new request.";
-    QString url = "https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/";
-    QNetworkRequest request(url);
-//    QByteArray *dataToSend = new QByteArray(body.toUtf8());
-    QBuffer *buffer = new QBuffer(&body);
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
-    QString requestMethod;
 
+//    setting general settings
 
-    // set header data
-    QString concatenated = "Test:Testotest";
-    QByteArray authData = concatenated.toLocal8Bit().toBase64();
-    QString headerAuthData = "Basic " + authData;
+    request.setUrl(QUrl("https://nextcloud.timesinks.de/remote.php/dav/calendars/Test/test_list/"));
+    connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
 
+//    set header data
+
+    QString headerAuthData = "Basic " + QByteArray(QString("Test:Testotest").toLocal8Bit()).toBase64();
     request.setRawHeader("Authorization", headerAuthData.toLocal8Bit());
     request.setRawHeader("Depth", "1");
     request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9a3pre) Gecko/20070330");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml; charset=utf-8");
+}
+
+void Request::send_request()
+{
     request.setHeader(QNetworkRequest::ContentLengthHeader, body.size());
-
-
-//    if(requestType == "get_calendar_list") {
-//        requestMethod = "PROPFIND";
-//    }
-//    else if(requestType == "get_todo_list") {
-//        requestMethod = "REPORT";
-//    }
-//    else if(requestType == "check_updates") {
-//        requestMethod = "REPORT";
-//    }
-
-    manager->sendCustomRequest(request, requestMethod.toLocal8Bit(), buffer);
+    QBuffer *buffer = new QBuffer(&body);
+    manager.sendCustomRequest(request, request_method.toLocal8Bit(), buffer);
 }
 
 void Request::set_request_method(QString transmit_method)
 {
 //    Set the request method. This will later include safetychecks.
+//    getting avaliable lists should be PROPFIND, while getting a certain TODO list or checking updates should be REPORT
 
-    request_method = transmit_method;
+    if(transmit_method == "REPORT" || transmit_method == "PROPFIND") {
+        request_method = transmit_method;
+    }
 }
 
 void Request::set_body(QByteArray transmit_body)

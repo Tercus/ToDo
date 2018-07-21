@@ -60,8 +60,13 @@ bool ConnectClass::get_list()
     comp_filter.appendChild(comp_filter2);
         comp_filter2.setAttribute("name", "VTODO");
 
-
+    qDebug() << "using following body:";
     qDebug() << doc.toByteArray(4);
+
+    Request *transmitter = new Request;
+    transmitter->set_request_method("REPORT");
+    transmitter->set_body(doc.toByteArray(4));
+    transmitter->send_request();
     return false;
 }
 

@@ -18,9 +18,12 @@ public:
     explicit Request(QObject *parent = 0);
     void set_request_method(QString transmit_method);
     void set_body(QByteArray transmit_body);
+    void send_request();
 private:
-    QString request_method;
     QByteArray body;
+    QString request_method;
+    QNetworkRequest request;
+    QNetworkAccessManager manager;
     QMap<QString, QString> NodeRunner(QDomNode Node);
     void sendUpdates(QString url, QString etag, QString ics);
 public slots:

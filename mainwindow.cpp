@@ -71,31 +71,5 @@ void MainWindow::refresh_View()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    QDomDocument doc;
-    QDomElement propfind = doc.createElement("d:propfind");
-    QDomElement prop = doc.createElement("d:prop");
-    QDomElement displayname = doc.createElement("d:displayname");
-    QDomElement getctag = doc.createElement("cs:getctag");
-    QDomElement calendar_query = doc.createElement("c:calendar-query");
-    QDomElement getetag = doc.createElement("d:getetag");
-    QDomElement getlastmodified = doc.createElement("d:getlastmodified");
-    QDomElement calendar_data = doc.createElement("c:calendar-data");
-    QDomElement filter = doc.createElement("c:filter");
-    QDomElement comp_filter = doc.createElement("c:comp-filter");
-    QDomElement comp_filter2 = doc.createElement("c:comp-filter");
-
-    doc.appendChild(calendar_query);
-        calendar_query.setAttribute("xmlns:d", "DAV:");
-        calendar_query.setAttribute("xmlns:c", "urn:ietf:params:xml:ns:caldav");
-    calendar_query.appendChild(prop);
-    prop.appendChild(getetag);
-    prop.appendChild(getlastmodified);
-    prop.appendChild(calendar_data);
-    calendar_query.appendChild(filter);
-    filter.appendChild(comp_filter);
-        comp_filter.setAttribute("name", "VCALENDAR");
-    comp_filter.appendChild(comp_filter2);
-        comp_filter2.setAttribute("name", "VTODO");
-
-    qDebug() << doc.toByteArray(4);
+    qDebug() << "Test";
 }

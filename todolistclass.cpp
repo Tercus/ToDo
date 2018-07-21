@@ -24,7 +24,7 @@ void todoListClass::list_get()
 {
     qDebug() << "Button pressed to get full list from server";
     ConnectClass *newConnect = new ConnectClass;
-    newConnect->get_lists();
+    newConnect->get_list();
 }
 
 void todoListClass::list_check()
