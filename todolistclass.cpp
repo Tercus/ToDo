@@ -1,11 +1,26 @@
-#include "connectclass.h"
+#include "todolistclass.h"
 
-ConnectClass::ConnectClass(QObject *parent) : QObject(parent)
+todoListClass::todoListClass(QObject *parent) : QObject(parent)
 {
-    qDebug() << "A new ConnectionClass object has been created";
+    qDebug() << "New todolist has been created.";
 }
 
-bool ConnectClass::get_lists()
+void todoListClass::entry_new()
+{
+    qDebug() << "Call for new entry.";
+}
+
+void todoListClass::entry_edit()
+{
+    qDebug() << "Call for entry edit.";
+}
+
+void todoListClass::entry_delete()
+{
+    qDebug() << "Call for entry delete.";
+}
+
+void todoListClass::lists_get()
 {
 //    connect to the server and ask for a list of all available lists for the specific user.
 //    -> info can later be used to select and manage different lists. unused for now.
@@ -25,11 +40,9 @@ bool ConnectClass::get_lists()
     getctag.setAttribute("xmlns:cs", "http://calendarserver.org/ns/");
 
     qDebug() << doc.toByteArray(4);
-
-    return false;
 }
 
-bool ConnectClass::get_list()
+void todoListClass::list_get()
 {
 //    get the complete list of TODOs. This includes etags and their last modified timestamps.
 
@@ -46,6 +59,7 @@ bool ConnectClass::get_list()
 //            </c:comp-filter>
 //        </c:filter>
 //    </c:calendar-query>
+    qDebug() << "Button pressed to get full list from server.";
 
     doc.appendChild(calendar_query);
         calendar_query.setAttribute("xmlns:d", "DAV:");
@@ -67,11 +81,11 @@ bool ConnectClass::get_list()
     transmitter->set_request_method("REPORT");
     transmitter->set_body(doc.toByteArray(4));
     transmitter->send_request();
-    return false;
 }
 
-bool ConnectClass::get_updates()
+void todoListClass::list_update()
 {
+    qDebug() << "Call for checking the list for updates.";
 //    get a list of etags. Comparing etags quickly allows to check if the local data is still up to date.
 //    -> Changed/Added entries have new etags
 
@@ -99,12 +113,9 @@ bool ConnectClass::get_updates()
             comp_filter2.setAttribute("name", "VTODO");
 
     qDebug() << doc.toByteArray(4);
-
-    return false;
 }
 
-bool ConnectClass::send_edits(QString edited_entries)
+void todoListClass::list_clear()
 {
-    qDebug() << edited_entries;
-    return false;
+    qDebug() << "Call for clearing the list.";
 }
