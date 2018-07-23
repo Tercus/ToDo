@@ -20,28 +20,6 @@ void todoListClass::entry_delete()
     qDebug() << "Call for entry delete.";
 }
 
-void todoListClass::lists_get()
-{
-//    connect to the server and ask for a list of all available lists for the specific user.
-//    -> info can later be used to select and manage different lists. unused for now.
-
-//    create this DOM document:
-//    <d:propfind xmlns:d=\"DAV:\">
-//        <d:prop>
-//            <d:displayname/>
-//            <cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\"/>
-//        </d:prop>
-//    </d:propfind>
-
-    doc.appendChild(propfind);
-    propfind.appendChild(prop);
-    prop.appendChild(displayname);
-    prop.appendChild(getctag);
-    getctag.setAttribute("xmlns:cs", "http://calendarserver.org/ns/");
-
-    qDebug() << doc.toByteArray(4);
-}
-
 void todoListClass::list_get()
 {
 //    get the complete list of TODOs. This includes etags and their last modified timestamps.

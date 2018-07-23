@@ -35,7 +35,6 @@ public slots:
     void entry_new();       // create a new entry (new task)
     void entry_edit();      // edit an existing entry
     void entry_delete();    // delete an existing entry
-    void lists_get();       // get available lists from server url [!!UNUSED!!]
     void list_get();        // get full list from Server
     void list_update();     // only get etags from server (to check for updates)
     void list_clear();      // clear the list (eg. to re-init)
