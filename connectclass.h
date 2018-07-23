@@ -16,7 +16,7 @@ public:
     bool get_list();
     bool get_updates();
     bool send_edits(QString edited_entries);
-protected:
+private:
     QDomDocument doc;
     QDomElement propfind = doc.createElement("d:propfind");
     QDomElement prop = doc.createElement("d:prop");
