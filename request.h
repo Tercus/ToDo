@@ -9,6 +9,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
+#include "entryclass.h"
 
 class Request : public QObject
 {

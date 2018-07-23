@@ -80,12 +80,9 @@ void Request::requestFinished(QNetworkReply *reply)
 
     if(urlPath.endsWith(".ics")) {
         // Most likely a reply from editing a task
-        qDebug() << "This is likely a reply from editing a task. I'll have to refresh the task list";
-//        todoList[ui->listWidget->currentRow()]->set_etag(reply->rawHeader("ETag"));
-//        refresh_View();
     }
     else if(replyText.contains("BEGIN:VTODO")) {
-        qDebug() << "This is a reply from getting a whole list.";
+        // Most likely reply from getting a whole list of TODOs
 
         QDomDocument doc;
         doc.setContent(replyText);
@@ -99,6 +96,7 @@ void Request::requestFinished(QNetworkReply *reply)
 //            tempEntry->set_etag(node.value("d:getetag"));
 //            tempEntry->set_href(node.value("d:href"));
 //            tempEntry->set_ics(node.value("cal:calendar-data"));
+
 //            todoList.push_back(tempEntry);
 
             // adding the entry to the listwidget
