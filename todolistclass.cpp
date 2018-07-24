@@ -125,15 +125,15 @@ void todoListClass::requestFinished(QNetworkReply *reply)
             QMap<QString, QString> node = NodeRunner(responseNodes.at(x));
 
             // Creating a new Entry object and adding it to the todoList
-//            EntryClass *tempEntry = new EntryClass;
-//            tempEntry->set_etag(node.value("d:getetag"));
-//            tempEntry->set_href(node.value("d:href"));
-//            tempEntry->set_ics(node.value("cal:calendar-data"));
+            EntryClass *tempEntry = new EntryClass;
+            tempEntry->set_etag(node.value("d:getetag"));
+            tempEntry->set_href(node.value("d:href"));
+            tempEntry->set_ics(node.value("cal:calendar-data"));
 
 //            todoList.push_back(tempEntry);
 
             // adding the entry to the listwidget
-//            add_todo_entry(*tempEntry);
+            emit(entry_to_ui(*tempEntry));
             qDebug() << node.value("cal:calendar-data");
         }
     }

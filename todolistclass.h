@@ -6,6 +6,7 @@
 #include <QDomElement>
 #include <QtNetwork/QNetworkReply>
 #include "request.h"
+#include "entryclass.h"
 
 class todoListClass : public QObject
 {
@@ -17,7 +18,7 @@ public:
 private:
     QString todoListName;
     QUrl sourceUrl;
-    QVector<QString> entries;
+    QVector<EntryClass> entries;
     QVector<QString> uids;
     QVector<QString> etag;
     QDomDocument doc;
@@ -33,6 +34,7 @@ private:
     QDomElement comp_filter = doc.createElement("c:comp-filter");
     QDomElement comp_filter2 = doc.createElement("c:comp-filter");
     QMap<QString, QString> NodeRunner(QDomNode Node);
+
 public slots:
     void entry_new();       // create a new entry (new task)
     void entry_edit();      // edit an existing entry
@@ -41,6 +43,9 @@ public slots:
     void list_update();     // only get etags from server (to check for updates)
     void list_clear();      // clear the list (eg. to re-init)
     void requestFinished(QNetworkReply *reply);
+
+signals:
+    void entry_to_ui(EntryClass entry);
 };
 
 #endif // TODOLISTCLASS_H

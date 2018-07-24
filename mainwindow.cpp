@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(onListWidgetlItemClicked(QListWidgetItem*))
             );
     connect(this->ui->pushButton, SIGNAL(clicked(bool)), &a, SLOT(list_get()));
+    connect(&a, SIGNAL(entry_to_ui(EntryClass)), this, SLOT(ui_add_entry(EntryClass)));
 }
 
 MainWindow::~MainWindow()
@@ -28,6 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::ui_add_entry(EntryClass entry)
 {
+    qDebug() << "I am supposed to add an entry";
     QListWidgetItem *tempItem = new QListWidgetItem(entry.get_key_value("SUMMARY"), ui->listWidget);
     tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
     tempItem->setCheckState((entry.is_completed())?Qt::Checked:Qt::Unchecked);
