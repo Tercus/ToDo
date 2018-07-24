@@ -30,7 +30,7 @@ private:
     QDomElement filter = doc.createElement("c:filter");
     QDomElement comp_filter = doc.createElement("c:comp-filter");
     QDomElement comp_filter2 = doc.createElement("c:comp-filter");
-
+    QMap<QString, QString> NodeRunner(QDomNode Node);
 public slots:
     void entry_new();       // create a new entry (new task)
     void entry_edit();      // edit an existing entry
@@ -38,6 +38,7 @@ public slots:
     void list_get();        // get full list from Server
     void list_update();     // only get etags from server (to check for updates)
     void list_clear();      // clear the list (eg. to re-init)
+    void requestFinished(QNetworkReply *reply);
 };
 
 #endif // TODOLISTCLASS_H

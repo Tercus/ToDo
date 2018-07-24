@@ -56,9 +56,10 @@ void todoListClass::list_get()
     qDebug() << doc.toByteArray(4);
 
     Request *transmitter = new Request;
-    transmitter->set_request_method("REPORT");
-    transmitter->set_body(doc.toByteArray(4));
-    transmitter->send_request();
+    connect(&transmitter->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
+//    transmitter->set_request_method("REPORT");
+//    transmitter->set_body(doc.toByteArray(4));
+    transmitter->send_request("REPORT", doc.toByteArray(4));
 }
 
 void todoListClass::list_update()
@@ -96,4 +97,59 @@ void todoListClass::list_update()
 void todoListClass::list_clear()
 {
     qDebug() << "Call for clearing the list.";
+}
+
+void todoListClass::requestFinished(QNetworkReply *reply)
+{
+    qDebug() << "Request got a reply:" << reply;
+    QUrl url = reply->url();
+    QString urlPath = url.path();
+    QString replyText = reply->readAll();
+    qDebug() << url;
+
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Darnit, something went wrong: Error" << QString::number(reply->error()) << "from url" << url.toString();
+        qDebug() << reply->errorString();
+    }
+
+    if(urlPath.endsWith(".ics")) {
+        // Most likely a reply from editing a task
+    }
+    else if(replyText.contains("BEGIN:VTODO")) {
+        // Most likely reply from getting a whole list of TODOs
+
+        QDomDocument doc;
+        doc.setContent(replyText);
+        QDomNodeList responseNodes = doc.elementsByTagName("d:response");
+
+        for(int x = 0; x < responseNodes.count(); x++) {
+            QMap<QString, QString> node = NodeRunner(responseNodes.at(x));
+
+            // Creating a new Entry object and adding it to the todoList
+//            EntryClass *tempEntry = new EntryClass;
+//            tempEntry->set_etag(node.value("d:getetag"));
+//            tempEntry->set_href(node.value("d:href"));
+//            tempEntry->set_ics(node.value("cal:calendar-data"));
+
+//            todoList.push_back(tempEntry);
+
+            // adding the entry to the listwidget
+//            add_todo_entry(*tempEntry);
+            qDebug() << node.value("cal:calendar-data");
+        }
+    }
+}
+
+QMap<QString, QString> todoListClass::NodeRunner(QDomNode Node)
+{
+    QMap<QString, QString> values;
+    QString currentNodeName = Node.nodeName().toUtf8();
+    if(currentNodeName == "d:href" || currentNodeName == "d:getetag" || currentNodeName == "cal:calendar-data") {
+        values.insert(currentNodeName, Node.toElement().QDomElement::text());
+//        qDebug() << Node.toElement().QDomElement::text();
+    }
+    for (int x = 0; x < Node.childNodes().count(); x++) {
+        values.unite(NodeRunner(Node.childNodes().at(x)));
+    }
+    return(values);
 }
