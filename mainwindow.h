@@ -7,7 +7,6 @@
 #include <QDomElement>
 #include "entryclass.h"
 #include "todolistclass.h"
-#include "request.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,16 +20,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void ui_add_entry(EntryClass entry);
+
 private slots:
     void on_actionExit_triggered();
     void onListWidgetlItemClicked(QListWidgetItem *listItem);
     void on_actionGet_ToDo_s_from_Server_triggered();
     void on_pushButton_SaveChanges_clicked();
-
     void on_pushButton_2_clicked();
-
-signals:
-    void testSignal(bool);
 
 private:
     Ui::MainWindow *ui;
@@ -45,7 +43,6 @@ private:
     void sendUpdates(QString url, QString etag, QString ics);
     QMap<QString, QString> NodeRunner(QDomNode Node);
     QStringList split_ics(QString icsValue);
-    void add_todo_entry(EntryClass entry);
     void refresh_View();
 };
 

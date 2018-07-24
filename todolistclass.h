@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QDomElement>
+#include <QtNetwork/QNetworkReply>
 #include "request.h"
 
 class todoListClass : public QObject

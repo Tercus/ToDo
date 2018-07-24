@@ -37,6 +37,7 @@ void todoListClass::list_get()
 //            </c:comp-filter>
 //        </c:filter>
 //    </c:calendar-query>
+
     qDebug() << "Button pressed to get full list from server.";
 
     doc.appendChild(calendar_query);
@@ -57,8 +58,6 @@ void todoListClass::list_get()
 
     Request *transmitter = new Request;
     connect(&transmitter->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
-//    transmitter->set_request_method("REPORT");
-//    transmitter->set_body(doc.toByteArray(4));
     transmitter->send_request("REPORT", doc.toByteArray(4));
 }
 

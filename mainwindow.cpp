@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::add_todo_entry(EntryClass entry)
+void MainWindow::ui_add_entry(EntryClass entry)
 {
     QListWidgetItem *tempItem = new QListWidgetItem(entry.get_key_value("SUMMARY"), ui->listWidget);
     tempItem->setFlags(tempItem->flags() | Qt::ItemIsUserCheckable);
@@ -65,7 +65,7 @@ void MainWindow::refresh_View()
 {
     ui->listWidget->clear();
     foreach (EntryClass *entry, todoList) {
-        add_todo_entry(*entry);
+        ui_add_entry(*entry);
     }
 }
 
